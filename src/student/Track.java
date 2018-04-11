@@ -10,21 +10,27 @@ Author @Alexander Hurley
  */
 
 public class Track implements model.Track{
+
     student.Route route = new student.Route();
+
+    public Track(student.Route route){
+        this.route = route;
+
+    }
 
     @Override
     public Orientation getOrientation() {
-        return null;
+        return route.getOrientation();
     }
 
     @Override
     public Baron getBaron() {
-        return null;
+        return route.getBaron();
     }
 
     @Override
     public Route getRoute() {
-        return null;
+        return this.route;
     }
 
     @Override

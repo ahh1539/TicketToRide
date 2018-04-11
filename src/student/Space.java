@@ -2,6 +2,7 @@ package student;
 
 public class Space implements model.Space {
     @Override
+
     public int getRow() {
         return 0;
     }

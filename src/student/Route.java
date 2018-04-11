@@ -8,7 +8,17 @@ import model.Track;
 
 import java.util.List;
 
+
+/**
+ * Author: Brett Farruggia (brf3493)
+ */
 public class Route implements model.Route {
+
+
+    public Route(){
+
+    }
+
     @Override
     public Baron getBaron() {
         return null;

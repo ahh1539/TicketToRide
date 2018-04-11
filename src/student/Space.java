@@ -39,8 +39,25 @@ public class Space implements model.Space {
         return col;
     }
 
+    /**
+     *
+     * Checks if two spaces occupy the same row and column on the map.
+     *
+     * @param other The other space to which this space is being compared for
+     *              collocation.
+     *
+     * @return True if the space is not collocated
+     */
     @Override
     public boolean collocated(model.Space other) {
+
+        int col = other.getCol();
+        int row = other.getRow();
+
+
+        if (row == this.row && col == this.col){
+            return true;
+        }
         return false;
     }
 }

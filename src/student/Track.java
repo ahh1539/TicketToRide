@@ -11,10 +11,14 @@ Author @Alexander Hurley
 
 public class Track implements model.Track{
 
+    int col;
+    int row;
     student.Route route = new student.Route();
 
-    public Track(student.Route route){
+    public Track(student.Route route, int col, int row){
         this.route = route;
+        this.col = col;
+        this.row = row;
 
     }
 
@@ -35,16 +39,22 @@ public class Track implements model.Track{
 
     @Override
     public int getRow() {
-        return 0;
+        return this.row;
     }
 
     @Override
     public int getCol() {
-        return 0;
+        return this.col;
     }
 
     @Override
     public boolean collocated(Space other) {
+        int row = other.getRow();
+        int col = other.getCol();
+
+        if (row == this.row && col == this.col){
+            return true;
+        }
         return false;
     }
 }

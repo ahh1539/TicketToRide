@@ -14,7 +14,6 @@ import java.util.List;
  */
 public class Route implements model.Route {
 
-
     public Route(){
 
     }

@@ -9,16 +9,15 @@ import model.Space;
 Author @Alexander Hurley
  */
 
-public class Track implements model.Track{
+public class Track extends student.Space implements model.Track{
 
     int col;
     int row;
-    student.Route route = new student.Route();
+    student.Route route;
 
     public Track(student.Route route, int col, int row){
+        super(row,col);
         this.route = route;
-        this.col = col;
-        this.row = row;
 
     }
 

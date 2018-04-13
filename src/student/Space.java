@@ -15,11 +15,10 @@ public class Space implements model.Space {
     /**
      * Creates a space.
      */
-     public Space(){
+     public Space(Integer row, Integer col){
 
          this.row = row;
          this.col = col;
-
 
     }
 

@@ -13,15 +13,16 @@ import java.util.List;
 /**
  * Author: Brett Farruggia (brf3493)
  */
-public class Route implements model.Route {
+public class StuRoute implements model.Route {
 
-    private ArrayList<student.Track> tracks;
+    private ArrayList<Track> tracks;
     private model.Station start;
     private model.Station end;
     private Baron owner;
     private Orientation ori;
 
-    public Route(model.Station start, model.Station end, Baron baron){
+    public StuRoute(model.Station start, model.Station end, Baron baron){
+
         tracks = new ArrayList<>();
         this.start = start;
         this.end = end;

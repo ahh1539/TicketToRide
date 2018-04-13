@@ -117,7 +117,7 @@ public class RailroadMapPane extends GridPane implements RailroadBaronsView {
             }
         }
         else {
-            showAlert("Cannot Claim Route!",
+            showAlert("Cannot Claim StuRoute!",
                     "You can't claim that route. Make sure that you have " +
                             "enough pieces and cards!");
         }

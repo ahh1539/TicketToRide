@@ -7,7 +7,7 @@ package model;
  */
 public interface Station extends Space {
     /**
-     * The name of the station, e.g. "Trainsville Station".
+     * The name of the station, e.g. "Trainsville StuStation".
      *
      * @return The name of the station.
      */

@@ -35,7 +35,7 @@ public class RailroadBaronsUI extends Application
      */
     private static final String USAGE =
             "Usage: java view.RailroadBaronsIO " +
-            "<MapMaker Class> <RailroadBarons Class> [Optional Map File]";
+            "<StuMapMaker Class> <StuRailroadBarons Class> [Optional Map File]";
 
     /**
      * The {@link FileChooser} used to load or save map files.

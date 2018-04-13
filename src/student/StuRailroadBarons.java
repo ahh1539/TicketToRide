@@ -8,7 +8,7 @@ import model.RailroadMap;
 
 import java.util.Collection;
 
-public class RailroadBarons implements model.RailroadBarons  {
+public class StuRailroadBarons implements model.RailroadBarons  {
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
 

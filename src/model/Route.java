@@ -85,7 +85,7 @@ public interface Route {
      *
      * @param space The {@link Space} that may be in this route.
      *
-     * @return True if the {@link Space Space's} coordinates are a part of
+     * @return True if the {@link Space StuSpace's} coordinates are a part of
      * this route, and false otherwise.
      */
     boolean includesCoordinate(Space space);

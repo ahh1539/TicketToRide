@@ -11,7 +11,7 @@ import java.util.Collection;
 Author @Alexander Hurley
  */
 
-public class RailRoadBaronsMap implements RailroadMap{
+public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public void addObserver(RailroadMapObserver observer) {
 

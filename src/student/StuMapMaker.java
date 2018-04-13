@@ -6,7 +6,7 @@ import model.RailroadMap;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class MapMaker implements model.MapMaker {
+public class StuMapMaker implements model.MapMaker {
     @Override
     public RailroadMap readMap(InputStream in) throws RailroadBaronsException {
         return null;

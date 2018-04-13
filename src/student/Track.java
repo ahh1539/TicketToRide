@@ -13,9 +13,9 @@ public class Track implements model.Track{
 
     int col;
     int row;
-    student.Route route = new student.Route();
+    StuRoute route = new StuRoute();
 
-    public Track(student.Route route, int col, int row){
+    public Track(StuRoute route, int col, int row){
         this.route = route;
         this.col = col;
         this.row = row;

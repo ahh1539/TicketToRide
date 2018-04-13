@@ -21,7 +21,7 @@ public class DeckPane extends BorderPane implements RailroadBaronsView {
     private static final String GAME_NOT_STARTED = "Game Not Started";
 
     /**
-     * A {@link Text} that is used to display the {@link Player Player's} name
+     * A {@link Text} that is used to display the {@link Player StuPlayer's} name
      * and color.
      */
     private final Text playerInfo;
@@ -125,7 +125,7 @@ public class DeckPane extends BorderPane implements RailroadBaronsView {
                 break;
         }
         playerInfo.setStyle(fontCss);
-        playerInfo.setText(baron.toString() + " Player");
+        playerInfo.setText(baron.toString() + " StuPlayer");
 
         Pair lastDealt = player.getLastTwoCards();
         cardOne.setCardImage(

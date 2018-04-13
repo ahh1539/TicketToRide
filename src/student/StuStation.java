@@ -5,7 +5,7 @@ import model.Space;
 /*
 Author @Alexander Hurley
  */
-public class Station implements model.Station{
+public class StuStation implements model.Station{
 
     private String name;
     private Integer col;
@@ -14,7 +14,7 @@ public class Station implements model.Station{
     /*
     initializes values
      */
-    public Station(String name, Integer col, Integer row){
+    public StuStation(String name, Integer col, Integer row){
         this.name=name;
         this.col=col;
         this.row=row;

@@ -2,7 +2,7 @@ package student;
 
 import model.Card;
 
-public class Deck implements model.Deck {
+public class StuDeck implements model.Deck {
     @Override
     public void reset() {
 

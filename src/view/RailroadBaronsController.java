@@ -72,7 +72,7 @@ public class RailroadBaronsController implements RailroadMapObserver,
      * <ul>
      *     <li>The specified class name is fully qualified, i.e. contains the
      *     package as well as the class name, e.g. student.MyMapMaker</li>
-     *     <li>The specified class implements the MapMaker interface in the
+     *     <li>The specified class implements the StuMapMaker interface in the
      *     Railroad Barons {@link model model package}.</li>
      *     <li>The specified class has a default or parameterless
      *     constructor.</li>
@@ -99,7 +99,7 @@ public class RailroadBaronsController implements RailroadMapObserver,
      *     <li>The specified class name is fully qualified, i.e. contains the
      *     package as well as the class name, e.g.
      *     student.MyRailroadBarons</li>
-     *     <li>The specified class implements the RailroadBarons interface in
+     *     <li>The specified class implements the StuRailroadBarons interface in
      *     the Railroad Barons {@link model model package}.</li>
      *     <li>The specified class has a default or parameterless
      *     constructor.</li>
@@ -182,7 +182,7 @@ public class RailroadBaronsController implements RailroadMapObserver,
     void loadMap(String path) throws RailroadBaronsException {
         if(mapMaker == null) {
             throw new RailroadBaronsException(
-                    "MapMaker has not been configured!");
+                    "StuMapMaker has not been configured!");
         }
 
         try(InputStream in = new FileInputStream(path)) {

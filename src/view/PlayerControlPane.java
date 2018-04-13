@@ -16,7 +16,7 @@ import model.Player;
 public class PlayerControlPane extends GridPane
         implements RailroadBaronsView {
     /**
-     * Button label used when the {@link Player Player's} turn has begun and
+     * Button label used when the {@link Player StuPlayer's} turn has begun and
      * the {@link model.Card cards} are still face down. The player uses this
      * to flip the cards face up and begin playing.
      */
@@ -29,7 +29,7 @@ public class PlayerControlPane extends GridPane
     private static final String END_TURN = "End Turn";
 
     /**
-     * Button label used when the current {@link Player Player's} turn has
+     * Button label used when the current {@link Player StuPlayer's} turn has
      * ended and the player is waiting for the next turn to start. This occurs
      * between the end of one turn and the start of the next. Most of the time
      * the transition will be fast enough that human players won't notice.
@@ -57,7 +57,7 @@ public class PlayerControlPane extends GridPane
     private final DeckPane deckPane;
 
     /**
-     * Displays the current {@link Player Player's} hand of cards.
+     * Displays the current {@link Player StuPlayer's} hand of cards.
      */
     private final PlayerHandPane handPane;
 
@@ -120,7 +120,7 @@ public class PlayerControlPane extends GridPane
      *
      * @param numberOfCardsRemaining The number of {@link model.Card Cards}
      *                               remaining in the game
-     *                               {@link model.Deck Deck}.
+     *                               {@link model.Deck StuDeck}.
      */
     void setNumberOfCardsRemaining(int numberOfCardsRemaining) {
         deckPane.setNumberOfCardsRemaining(numberOfCardsRemaining);

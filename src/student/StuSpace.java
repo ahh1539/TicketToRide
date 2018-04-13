@@ -5,7 +5,7 @@ package student;
  * A space on the gameboard.
  * Author: Brett Farruggia (brf3493)
  */
-public class Space implements model.Space {
+public class StuSpace implements model.Space {
 
 
     private Integer row;
@@ -15,7 +15,7 @@ public class Space implements model.Space {
     /**
      * Creates a space.
      */
-     public Space(){
+     public StuSpace(){
 
          this.row = row;
          this.col = col;

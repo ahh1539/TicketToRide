@@ -2,7 +2,7 @@ package student;
 
 import model.Card;
 
-public class Pair implements model.Pair {
+public class StuPair implements model.Pair {
     @Override
     public Card getFirstCard() {
         return null;

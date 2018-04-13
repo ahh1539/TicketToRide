@@ -6,6 +6,7 @@ import model.Space;
 import model.Station;
 import model.Track;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -14,38 +15,52 @@ import java.util.List;
  */
 public class Route implements model.Route {
 
-    public Route(){
+    private ArrayList<student.Track> tracks;
+    private model.Station start;
+    private model.Station end;
+    private Baron owner;
+    private Orientation ori;
 
+    public Route(model.Station start, model.Station end, Baron baron){
+        tracks = new ArrayList<>();
+        this.start = start;
+        this.end = end;
+        owner = baron;
+        if (start.getRow()==end.getRow()) {
+            ori=Orientation.HORIZONTAL;
+        } else {
+            ori=Orientation.VERTICAL;
+        }
     }
 
     @Override
     public Baron getBaron() {
-        return null;
+        return owner;
     }
 
     @Override
     public Station getOrigin() {
-        return null;
+        return start;
     }
 
     @Override
     public Station getDestination() {
-        return null;
+        return end;
     }
 
     @Override
     public Orientation getOrientation() {
-        return null;
+        return ori;
     }
 
     @Override
     public List<Track> getTracks() {
-        return null;
+        return tracks;
     }
 
     @Override
     public int getLength() {
-        return 0;
+        return tracks.size();
     }
 
     @Override
@@ -55,11 +70,20 @@ public class Route implements model.Route {
 
     @Override
     public boolean includesCoordinate(Space space) {
+        for (Track track: tracks) {
+            if (track.collocated(space)) {
+                return true;
+            }
+        }
         return false;
     }
 
     @Override
     public boolean claim(Baron claimant) {
+        if (owner == Baron.UNCLAIMED) {
+            owner = claimant;
+            return true;
+        }
         return false;
     }
 }

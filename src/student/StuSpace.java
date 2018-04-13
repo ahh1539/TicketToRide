@@ -15,7 +15,7 @@ public class StuSpace implements model.Space {
     /**
      * Creates a space.
      */
-     public StuSpace(){
+     public StuSpace(Integer row, Integer col){
 
          this.row = row;
          this.col = col;

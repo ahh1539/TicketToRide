@@ -9,13 +9,13 @@ import model.Space;
 Author @Alexander Hurley
  */
 
-public class Track implements model.Track{
+public class StuTrack implements model.Track{
 
     int col;
     int row;
     StuRoute route = new StuRoute();
 
-    public Track(StuRoute route, int col, int row){
+    public StuTrack(StuRoute route, int col, int row){
         this.route = route;
         this.col = col;
         this.row = row;

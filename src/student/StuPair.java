@@ -28,7 +28,8 @@ public class StuPair implements model.Pair {
      */
     @Override
     public Card getFirstCard() {
-        return card_one;
+        return
+                card_one;
     }
 
     /**

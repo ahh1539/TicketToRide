@@ -22,6 +22,7 @@ public class StuRoute implements model.Route {
     private Orientation ori;
 
     public StuRoute(model.Station start, model.Station end, Baron baron){
+
         tracks = new ArrayList<>();
         this.start = start;
         this.end = end;

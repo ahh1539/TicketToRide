@@ -11,7 +11,7 @@ public class StuDeck implements model.Deck {
 
     public StuDeck(){
 
-        for(int i = 1; i <=16; i++) {   //number of cards in a deck?
+        for(int i = 1; i <=20; i++) {   //number of cards in a deck?
             gameDeck.add(Card.BLACK);
             gameDeck.add(Card.BLUE);
             gameDeck.add(Card.ORANGE);
@@ -29,7 +29,7 @@ public class StuDeck implements model.Deck {
     public void reset() {
         gameDeck.clear();
 
-        for(int i = 1; i <=16; i++) {   //number of cards in a deck?
+        for(int i = 1; i <=20; i++) {   //number of cards in a deck?
            gameDeck.add(Card.BLACK);
            gameDeck.add(Card.BLUE);
            gameDeck.add(Card.ORANGE);

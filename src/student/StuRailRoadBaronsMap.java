@@ -12,6 +12,10 @@ Author @Alexander Hurley
  */
 
 public class StuRailRoadBaronsMap implements RailroadMap{
+    private int Rows;
+    private int Cols;
+    Space[][] spaces;
+
     @Override
     public void addObserver(RailroadMapObserver observer) {
 
@@ -24,17 +28,17 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public int getRows() {
-        return 0;
+        return Rows;
     }
 
     @Override
     public int getCols() {
-        return 0;
+        return Cols;
     }
 
     @Override
     public Space getSpace(int row, int col) {
-        return null;
+        return spaces[row][col];
     }
 
     @Override

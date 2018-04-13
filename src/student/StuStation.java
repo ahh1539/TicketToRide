@@ -7,6 +7,7 @@ Author @Alexander Hurley
  */
 public class StuStation implements model.Station{
 
+    private Integer ident;
     private String name;
     private Integer col;
     private Integer row;
@@ -14,10 +15,11 @@ public class StuStation implements model.Station{
     /*
     initializes values
      */
-    public StuStation(String name, Integer col, Integer row){
+    public StuStation(Integer ident, Integer row, Integer col, String name){
         this.name=name;
         this.col=col;
         this.row=row;
+        this.ident=ident;
     }
 
     /*

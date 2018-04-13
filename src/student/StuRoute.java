@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class StuRoute implements model.Route {
 
-    private ArrayList<model.Track> tracks;
+    private ArrayList<Track> tracks;
     private model.Station start;
     private model.Station end;
     private Baron owner;

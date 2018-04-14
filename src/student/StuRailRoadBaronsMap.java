@@ -1,10 +1,8 @@
 package student;
 
-import model.RailroadMap;
-import model.RailroadMapObserver;
-import model.Route;
-import model.Space;
+import model.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 /*
@@ -12,37 +10,52 @@ Author @Alexander Hurley
  */
 
 public class StuRailRoadBaronsMap implements RailroadMap{
-    private int Rows;
-    private int Cols;
-    Space[][] spaces;
 
-    @Override
-    public void addObserver(RailroadMapObserver observer) {
+    public Space[][] spaces;
+    public ArrayList observers;
+    public StuRoute[] routes;
+
+    public StuRailRoadBaronsMap(Space[][] spaces, StuRoute[] routes){
+        this.routes = routes;
+        this.spaces = spaces;
 
     }
 
     @Override
+    public void addObserver(RailroadMapObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
     public void removeObserver(RailroadMapObserver observer) {
+        observers.remove(observer);
 
     }
 
     @Override
     public int getRows() {
-        return Rows;
+        //assumes at least one row
+        int num_rows = spaces.length;
+        return num_rows;
     }
 
     @Override
     public int getCols() {
-        return Cols;
+        //assumes at least one col
+        int num_cols = spaces[0].length;
+        return num_cols;
+
     }
 
     @Override
     public Space getSpace(int row, int col) {
+        //assumes that space is a valid one
         return spaces[row][col];
     }
 
     @Override
     public Route getRoute(int row, int col) {
+        routes[0].
         return null;
     }
 
@@ -53,7 +66,23 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        return 0;
+        int temp = 0;
+        int shortest = 1000000000;
+        for (int i = 0; i <= routes.length; i++){
+            if (routes[i].getBaron() == Baron.UNCLAIMED){
+                temp = routes[i].getLength();
+                if (temp < shortest){
+                    shortest = temp;
+                }
+                else {
+                    i++;
+                }
+            }
+            else{
+                i++;
+            }
+        }
+        return shortest;
     }
 
     @Override

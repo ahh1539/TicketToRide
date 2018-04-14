@@ -14,9 +14,14 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     public Space[][] spaces;
     public ArrayList observers;
     public StuRoute[] routes;
+    private int rows;
+    private int columns;
 
-    public StuRailRoadBaronsMap(Space[][] spaces, StuRoute[] routes){
+
+    public StuRailRoadBaronsMap(Integer rows, Integer columns, StuRoute[] routes){
         this.routes = routes;
+        this.rows = rows;
+        this.columns = columns;
         this.spaces = spaces;
 
     }

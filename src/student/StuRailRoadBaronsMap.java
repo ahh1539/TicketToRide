@@ -65,7 +65,8 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public Route getRoute(int row, int col) {
-        return null;
+        Space space = getSpace(row, col);
+        // look into changing the track constructor to implement space
     }
 
     @Override
@@ -96,6 +97,6 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public Collection<Route> getRoutes() {
-        return null;
+        return routes;
     }
 }

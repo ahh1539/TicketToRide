@@ -24,12 +24,8 @@ public class StuPlayer implements model.Player {
 
 
 
-    public StuPlayer(int score, int pieces, Baron player){
-        this.pieces = pieces;
-        this.score = score;
+    public StuPlayer(Baron player){
         this.player = player;
-
-
         //back and none
     }
 
@@ -93,26 +89,52 @@ public class StuPlayer implements model.Player {
 
     @Override
     public boolean canClaimRoute(Route route) {
-        int max_cards = 1000000000;
-        for (Integer num: player_cards.values()) {
-            if (num < max_cards){
-                max_cards = num;
+        int wild = 0;
+        int max_cards = 0;
+        for (Card carddd: player_cards.keySet()) {
+            if (carddd == Card.WILD){
+                if (player_cards.get(carddd)>=1){
+                    wild =1;
+                }
+                else {
+                    wild = 0;
+                }
+            }
+            if (player_cards.get(carddd) > max_cards && carddd != Card.WILD){
+                max_cards = player_cards.get(carddd);
             }
         }
         if (route.getBaron() == Baron.UNCLAIMED && canClaim == true &&
-                route.getLength() <= max_cards && pieces >= route.getLength()){
+                route.getLength() <= max_cards+wild && pieces >= route.getLength()){
             return true;
         }
         return false;
     }
 
+
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        canClaim = false;
-        pieces = pieces - route.getLength();
-        routes.add(route);
+        if (canClaimRoute(route) == true) {
 
-
+            canClaim = false;
+            pieces = pieces - route.getLength();
+            int max_cards = 0;
+            Card color = Card.RED;
+            Card wild = Card.WILD;
+            for (Card carddd : player_cards.keySet()) {
+                if (player_cards.get(carddd) > max_cards && carddd != Card.WILD) {
+                    max_cards = player_cards.get(carddd);
+                    color = carddd;
+                }
+            }
+            if (route.getLength() == player_cards.get(color) + 1 && player_cards.get(wild) >= 1) {
+                player_cards.put(color, player_cards.get(wild) - 1);
+                player_cards.put(color, player_cards.get(color) - (route.getLength() + 1));
+            } else {
+                player_cards.put(color, player_cards.get(color) - route.getLength());
+            }
+            routes.add(route);
+        }
     }
 
     @Override

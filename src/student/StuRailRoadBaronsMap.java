@@ -116,6 +116,10 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     }
 
+    /**
+     *
+     * @return an integer that returns the shortest unclaimed route
+     */
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
         int temp;

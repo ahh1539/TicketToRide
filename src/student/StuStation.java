@@ -2,8 +2,8 @@ package student;
 
 import model.Space;
 
-/*
-Author @Alexander Hurley
+/**
+ * @author Brett Farruggia & Alex Hurley
  */
 public class StuStation implements model.Station{
 
@@ -12,17 +12,21 @@ public class StuStation implements model.Station{
     private Integer col;
     private Integer row;
 
-    /*
-    initializes values
+    /**
+     * Creates a staiton
+     * @param ident station identity number
+     * @param row station on this row
+     * @param col station on this column
+     * @param name name of the station
      */
-    public StuStation(Integer ident, Integer row, Integer col, String name){
+    public StuStation(int ident, int row, int col, String name){
         this.name=name;
         this.col=col;
         this.row=row;
         this.ident=ident;
     }
 
-    /*
+    /**
     returns the station name
      */
     @Override
@@ -30,7 +34,7 @@ public class StuStation implements model.Station{
         return name;
     }
 
-    /*
+    /**
     returns the row of the station
      */
     @Override
@@ -38,7 +42,7 @@ public class StuStation implements model.Station{
         return row;
     }
 
-    /*
+    /**
     returns the column of the station
      */
     @Override
@@ -46,7 +50,7 @@ public class StuStation implements model.Station{
         return col;
     }
 
-    /*
+    /**
     returns whether or not the station occupies the same place in the board as the passed in space type
      */
     @Override

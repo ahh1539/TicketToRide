@@ -11,6 +11,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Observer;
 
+/**
+ * @author Brett Farruggia & Alex Hurley
+ */
+
 public class StuPlayer implements model.Player {
 
     private Baron player;
@@ -23,12 +27,19 @@ public class StuPlayer implements model.Player {
     private Pair last;
 
 
-
+    /**
+     * The constructor, takes a player
+     * @param player the player
+     */
     public StuPlayer(Baron player){
         this.player = player;
         //back and none
     }
 
+    /**
+     * The players hand
+     * @param dealt Resets the hand of the player
+     */
     @Override
     public void reset(Card... dealt) {
         player_cards.clear();
@@ -45,48 +56,82 @@ public class StuPlayer implements model.Player {
         routes.clear();
     }
 
+    /**
+     * Adds observer
+     * @param observer The new PlayerObserver
+     */
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
         observers.add(observer);
 
     }
 
+    /**
+     * Removes observer
+     * @param observer The PlayerObserver
+     */
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
         observers.remove(observer);
     }
 
+    /**
+     * gets The player
+     * @return the player
+     */
     @Override
     public Baron getBaron() {
         return player;
     }
 
+    /**
+     *
+     * @param dealt A pair of cards to be dealt
+     */
     @Override
     public void startTurn(Pair dealt) {
         canClaim = true;
         last = dealt;
     }
 
+    /**
+     *
+     * @return the last tow cards in the players hand
+     */
     @Override
     public Pair getLastTwoCards() {
         return last;
     }
 
+    /**
+     *
+     * @param card a card
+     * @return number of cards in the hand
+     */
     @Override
     public int countCardsInHand(Card card) {
         //need to count the cards
         int num_cards = 0;
-        for (Integer num: player_cards.values()) {
+        for (int num: player_cards.values()) {
             num_cards = num_cards + num;
         }
         return num_cards;
     }
 
+    /**
+     *
+     * @return the number of pieces
+     */
     @Override
     public int getNumberOfPieces() {
         return pieces;
     }
 
+    /**
+     *
+     * @param route the route in question
+     * @return a boolean, true if player cna claim route
+     */
     @Override
     public boolean canClaimRoute(Route route) {
         int wild = 0;
@@ -112,6 +157,12 @@ public class StuPlayer implements model.Player {
     }
 
 
+    /**
+     * Claims a route
+     * @param route The route being claimed
+     *
+     * @throws RailroadBaronsException
+     */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
         if (canClaimRoute(route) == true) {
@@ -137,16 +188,31 @@ public class StuPlayer implements model.Player {
         }
     }
 
+    /**
+     *
+     * @return all of the claimed routes
+     */
     @Override
     public Collection<Route> getClaimedRoutes() {
         return routes;
     }
 
+    /**
+     * The score of the game
+     * @return the score
+     */
     @Override
     public int getScore() {
         return score;
     }
 
+    /**
+     *
+     * @param shortestUnclaimedRoute The length of the shortest unclaimed
+     *                               route in the current game.
+     *
+     * @return boolean
+     */
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
         int max_cards = 0;

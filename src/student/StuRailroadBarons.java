@@ -8,7 +8,17 @@ import model.RailroadMap;
 
 import java.util.Collection;
 
+
+/**
+ * The game logic for railroad barons
+ * @author Brett Farruggia & Alex Hurley
+ */
 public class StuRailroadBarons implements model.RailroadBarons  {
+
+    /**
+     * Adds a Railroad
+     * @param observer The {@link RailroadBaronsObserver} to add to the
+     */
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
 

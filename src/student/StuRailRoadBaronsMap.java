@@ -13,15 +13,18 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     public Space[][] spaces;
     public ArrayList observers;
-    public StuRoute[] routes;
+    public ArrayList<Route> routes;
     private int rows;
     private int columns;
 
 
-    public StuRailRoadBaronsMap(Integer rows, Integer columns, StuRoute[] routes){
+    public StuRailRoadBaronsMap(Integer rows, Integer columns, ArrayList<Route> routes){
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
+        for (int row = 0; row <= rows; row++)
+            for (int col = 0; col <= columns; col++)
+
         this.spaces = spaces;
 
     }
@@ -29,6 +32,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public void addObserver(RailroadMapObserver observer) {
         observers.add(observer);
+
     }
 
     @Override

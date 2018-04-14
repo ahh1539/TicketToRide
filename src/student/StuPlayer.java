@@ -149,6 +149,24 @@ public class StuPlayer implements model.Player {
 
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
+        int max_cards = 0;
+        int wild = 0;
+        for (Card carddd : player_cards.keySet()) {
+            if (carddd == Card.WILD){
+                if (player_cards.get(carddd)>=1){
+                    wild =1;
+                }
+                else {
+                    wild = 0;
+                }
+            }
+            if (player_cards.get(carddd) > max_cards && carddd != Card.WILD) {
+                max_cards = player_cards.get(carddd);
+            }
+        }
+        if (pieces >= shortestUnclaimedRoute || shortestUnclaimedRoute <= max_cards+wild){
+            return true;
+        }
         return false;
     }
 }

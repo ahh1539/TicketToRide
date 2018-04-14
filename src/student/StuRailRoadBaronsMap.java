@@ -122,6 +122,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public void routeClaimed(Route route) {
+        route.claim(route.getBaron());
 
     }
 

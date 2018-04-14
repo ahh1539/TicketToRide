@@ -23,34 +23,47 @@ public class StuMapMaker implements model.MapMaker {
         ArrayList<Route> routes = new ArrayList<>();
         int counter = 0;
 
-        while (mapReader.hasNextLine()){
+        while (mapReader.hasNextLine()) {
             fileLine = mapReader.nextLine();
             String[] splitRegex = fileLine.split(" ");
-            if(splitRegex.length==1){
-                counter = counter +1;
+            if (splitRegex.length == 1) {
+                counter = counter + 1;
                 fileLine = mapReader.nextLine();
                 splitRegex = fileLine.split(" ");
-            } if(counter==0){
+            }
+            if (counter == 0) {
                 stations.add(new StuStation(parseInt(splitRegex[0]), parseInt(splitRegex[1]), parseInt(splitRegex[2]), splitRegex[3]));
-            }else{
+                //need to add station name somehow (it can be multiple words long)
+            } else {
                 Baron tempVar = Baron.UNCLAIMED;
-                if(splitRegex[2].equals("UNCLAIMED")) {
+                if (splitRegex[2].equals("UNCLAIMED")) {
                     tempVar = Baron.UNCLAIMED;
-                }else if (splitRegex[2].equals("GREEN")){
+                } else if (splitRegex[2].equals("GREEN")) {
                     tempVar = Baron.GREEN;
-                }else if (splitRegex[2].equals("RED")){
+                } else if (splitRegex[2].equals("RED")) {
                     tempVar = Baron.RED;
-                }else if(splitRegex[2].equals("BLUE")){
+                } else if (splitRegex[2].equals("BLUE")) {
                     tempVar = Baron.BLUE;
-                }else if (splitRegex[2].equals("YELLOW")){
+                } else if (splitRegex[2].equals("YELLOW")) {
                     tempVar = Baron.YELLOW;
                 }
 
-                routes.add(new StuRoute(stations.get(parseInt(splitRegex[0])), stations.get(parseInt(splitRegex[1])) , tempVar ));
+                routes.add(new StuRoute(stations.get(parseInt(splitRegex[0])), stations.get(parseInt(splitRegex[1])), tempVar));
 
-                }
+            }
         }
-        return null;
+
+            int rows_checker = 0;
+            int cols_checker = 0;
+            for (StuStation s:stations) {
+                if (s.getRow()>rows_checker) {
+                    rows_checker = s.getRow();
+                }
+                if (s.getCol()>cols_checker) {
+                    cols_checker = s.getCol();
+                }
+            }
+        return new StuRailRoadBaronsMap(rows_checker, cols_checker, routes);
     }
 
     @Override

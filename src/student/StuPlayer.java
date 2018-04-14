@@ -5,6 +5,7 @@ import model.Pair;
 import model.PlayerObserver;
 import model.Route;
 
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,20 +13,21 @@ import java.util.Observer;
 
 public class StuPlayer implements model.Player {
 
-    private Baron baron;
+    private Baron player;
     private int pieces;
-    private int cardsInHand;
     private int score;
     private HashMap<Card,Integer> player_cards;
-    private ArrayList<RailroadBaronsObserver> observers;
+    private ArrayList<PlayerObserver> observers;
     private ArrayList<Route> routes;
+    public boolean canClaim = true;
 
 
 
-    public StuPlayer(int score, int cardsInHand, int pieces){
+    public StuPlayer(int score, int pieces, Baron player){
         this.pieces = pieces;
         this.score = score;
-        this.cardsInHand = cardsInHand;
+        this.player = player;
+
 
         //back and none
     }
@@ -48,22 +50,23 @@ public class StuPlayer implements model.Player {
 
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
+        observers.add(observer);
 
     }
 
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
-
+        observers.remove(observer);
     }
 
     @Override
     public Baron getBaron() {
-        return baron;
+        return player;
     }
 
     @Override
     public void startTurn(Pair dealt) {
-
+        canClaim = true;
 
     }
 
@@ -75,22 +78,31 @@ public class StuPlayer implements model.Player {
     @Override
     public int countCardsInHand(Card card) {
         //need to count the cards
-        return cardsInHand;
+
     }
 
     @Override
     public int getNumberOfPieces() {
-
         return pieces;
     }
 
     @Override
     public boolean canClaimRoute(Route route) {
+        int max_cards = 1000000000;
+        for (Integer num: player_cards.values()) {
+            if (num < max_cards){
+                max_cards = num;
+            }
+        }
+        if (route.getBaron() == Baron.UNCLAIMED && canClaim == true && route.getLength() <= max_cards){
+            return true;
+        }
         return false;
     }
 
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
+        canClaim = false;
 
     }
 

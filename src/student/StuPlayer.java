@@ -20,6 +20,7 @@ public class StuPlayer implements model.Player {
     private ArrayList<PlayerObserver> observers;
     private ArrayList<Route> routes;
     public boolean canClaim = true;
+    private Pair last;
 
 
 
@@ -67,18 +68,22 @@ public class StuPlayer implements model.Player {
     @Override
     public void startTurn(Pair dealt) {
         canClaim = true;
-
+        last = dealt;
     }
 
     @Override
     public Pair getLastTwoCards() {
-        return null;
+        return last;
     }
 
     @Override
     public int countCardsInHand(Card card) {
         //need to count the cards
-
+        int num_cards = 0;
+        for (Integer num: player_cards.values()) {
+            num_cards = num_cards + num;
+        }
+        return num_cards;
     }
 
     @Override
@@ -94,7 +99,8 @@ public class StuPlayer implements model.Player {
                 max_cards = num;
             }
         }
-        if (route.getBaron() == Baron.UNCLAIMED && canClaim == true && route.getLength() <= max_cards){
+        if (route.getBaron() == Baron.UNCLAIMED && canClaim == true &&
+                route.getLength() <= max_cards && pieces >= route.getLength()){
             return true;
         }
         return false;
@@ -103,12 +109,15 @@ public class StuPlayer implements model.Player {
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
         canClaim = false;
+        pieces = pieces - route.getLength();
+        routes.add(route);
+
 
     }
 
     @Override
     public Collection<Route> getClaimedRoutes() {
-        return null;
+        return routes;
     }
 
     @Override

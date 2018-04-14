@@ -1,21 +1,18 @@
 package student;
 
-import model.Player;
-import model.RailroadBarons;
+import model.*;
 
-public class StuRailRoadMapObserver implements model.RailroadBaronsObserver {
-    @Override
-    public void turnStarted(RailroadBarons game, Player player) {
-
-    }
+public class StuRailRoadMapObserver implements RailroadMapObserver {
 
     @Override
-    public void turnEnded(RailroadBarons game, Player player) {
+    public void routeClaimed(RailroadMap map, Route route) {
+        Baron owner = route.getBaron();
+        if (owner == Baron.UNCLAIMED){
 
-    }
-
-    @Override
-    public void gameOver(RailroadBarons game, Player winner) {
+        }
+        else {
+            route.claim(owner);
+        }
 
     }
 }

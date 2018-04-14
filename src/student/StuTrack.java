@@ -14,7 +14,7 @@ public class StuTrack implements model.Track{
     private int col;
     private int row;
     private Baron owner;
-    private StuRoute route;
+    private model.Route route;
 
     /**
      * Creates a track object
@@ -22,7 +22,7 @@ public class StuTrack implements model.Track{
      * @param col the column of the track
      * @param row the row of the track
      */
-    public StuTrack(StuRoute route, int col, int row){
+    public StuTrack(model.Route route, int col, int row){
         this.route = route;
         this.col = col;
         owner = Baron.UNCLAIMED;

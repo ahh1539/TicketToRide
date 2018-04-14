@@ -14,7 +14,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     public Space[][] spaces;
     public ArrayList observers;
-    public ArrayList<Route> routes;
+    public ArrayList<model.Route> routes;
     private Integer rows;
     private Integer columns;
     private Baron baron;
@@ -102,10 +102,19 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public Route getRoute(int row, int col) {
-        Space space = getSpace(row, col);
+        for (Route route: routes) {
+            ArrayList<model.Track> tracks = (ArrayList) route.getTracks();
+            StuTrack track = new StuTrack(route,col,row);
+            for (Track find: tracks) {
+                if (find == track){
+                    return route;
+                }
+            }
+        }
         // look into changing the track constructor to implement space
         return null;
     }
+
 
     /**
      * claims a route on the mpa

@@ -14,18 +14,19 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     public Space[][] spaces;
     public ArrayList observers;
     public ArrayList<Route> routes;
-    private int rows;
-    private int columns;
+    private Integer rows;
+    private Integer columns;
 
 
     public StuRailRoadBaronsMap(Integer rows, Integer columns, ArrayList<Route> routes){
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
-        for (int row = 0; row <= rows; row++)
-            for (int col = 0; col <= columns; col++)
-
-        this.spaces = spaces;
+        for (int row = 0; row <= rows; row++) {
+            for (int col = 0; col <= columns; col++) {
+                spaces[row][col] = (new StuSpace(row, col));
+            }
+        }
 
     }
 
@@ -64,7 +65,6 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public Route getRoute(int row, int col) {
-        routes[0].
         return null;
     }
 
@@ -77,9 +77,9 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     public int getLengthOfShortestUnclaimedRoute() {
         int temp = 0;
         int shortest = 1000000000;
-        for (int i = 0; i <= routes.length; i++){
-            if (routes[i].getBaron() == Baron.UNCLAIMED){
-                temp = routes[i].getLength();
+        for (int i = 0; i <= routes.size(); i++){
+            if (routes.get(i).getBaron() == Baron.UNCLAIMED){
+                temp = routes.get(i).getLength();
                 if (temp < shortest){
                     shortest = temp;
                 }

@@ -5,7 +5,10 @@ import model.Pair;
 import model.PlayerObserver;
 import model.Route;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Observer;
 
 public class StuPlayer implements model.Player {
 
@@ -13,11 +16,34 @@ public class StuPlayer implements model.Player {
     private int pieces;
     private int cardsInHand;
     private int score;
+    private HashMap<Card,Integer> player_cards;
+    private ArrayList<RailroadBaronsObserver> observers;
+    private ArrayList<Route> routes;
 
+
+
+    public StuPlayer(int score, int cardsInHand, int pieces){
+        this.pieces = pieces;
+        this.score = score;
+        this.cardsInHand = cardsInHand;
+
+        //back and none
+    }
 
     @Override
     public void reset(Card... dealt) {
+        player_cards.clear();
+        for (Card card1: dealt) {
+            player_cards.put(card1, 0);
+        }
 
+        pieces = 45;
+        score = 0;
+        for (Card card:dealt) {
+            player_cards.put(card, player_cards.get(card)+1);
+        }
+        observers.clear();
+        routes.clear();
     }
 
     @Override

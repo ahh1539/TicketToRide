@@ -29,7 +29,7 @@ public class StuRoute implements model.Route {
      */
     public StuRoute(model.Station start, model.Station end, Baron baron){
 
-        tracks = new ArrayList<>();
+        tracks = buildTracks();
         this.start = start;
         this.end = end;
         owner = baron;

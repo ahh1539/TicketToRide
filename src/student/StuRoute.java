@@ -40,11 +40,11 @@ public class StuRoute implements model.Route {
         //int cDiff = abs(end.getCol() - start.getCol());
         if (ori==Orientation.VERTICAL) {
             for (int x = start.getRow()+1; x < end.getRow(); x++) {
-                newTracks.add(new StuRailRoadBaronsMap(x, start.getCol(),this));
+                newTracks.add(new StuTrack(this, start.getCol(),x));
             }
         } else {
             for (int x = start.getCol()+1; x < end.getCol(); x++) {
-                newTracks.add(new BoardTrack(start.getRow(),x,this));
+                newTracks.add(new StuTrack(this, x, start.getRow()));
             }
         }
         return newTracks;

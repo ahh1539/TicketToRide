@@ -11,7 +11,7 @@ import java.util.List;
 
 
 /**
- * Author: Brett Farruggia (brf3493)
+ * Author: Brett Farruggia (brf3493) & Alex Hurley
  */
 public class StuRoute implements model.Route {
 
@@ -21,6 +21,12 @@ public class StuRoute implements model.Route {
     private Baron owner;
     private Orientation ori;
 
+    /**
+     * The constructor that creates the route
+     * @param start starting point of a route (a station)
+     * @param end ending point of a route (a station)
+     * @param baron a baron who can claim the route
+     */
     public StuRoute(model.Station start, model.Station end, Baron baron){
 
         tracks = new ArrayList<>();

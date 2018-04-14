@@ -12,9 +12,20 @@ import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
+
+/**
+ * Reads and writes map files
+ * @author Brett Farruggia & Alex Hurely
+ */
 public class StuMapMaker implements model.MapMaker {
 
 
+    /**
+     *
+     * @param in The function used create a railroad map
+     * @return a new railroad barons map
+     * @throws RailroadBaronsException
+     */
     @Override
     public RailroadMap readMap(InputStream in) throws RailroadBaronsException {
         Scanner mapReader = new Scanner(in);
@@ -66,6 +77,13 @@ public class StuMapMaker implements model.MapMaker {
         return new StuRailRoadBaronsMap(rows_checker, cols_checker, routes);
     }
 
+    /**
+     * Writes an in progress game to the map files folder, with claimed routes
+     * @param map The Railroad to write out the data to
+     * @param out The outputstream that writes the data
+     *
+     * @throws RailroadBaronsException
+     */
     @Override
     public void writeMap(RailroadMap map, OutputStream out) throws RailroadBaronsException {
 

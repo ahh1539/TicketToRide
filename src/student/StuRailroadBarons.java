@@ -20,10 +20,6 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     private Deck my_deck;
     private int turn = 0;
 
-    public StuRailroadBarons(RailroadMap my_map){
-        this.my_map = my_map;
-
-    }
 
     /**
      * Adds a Railroad observer
@@ -131,19 +127,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         if (canCurrentPlayerClaimRoute(row, col) == true){
             getCurrentPlayer().claimRoute(route);
         }
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
-        //NOT DONE NEVER THREW EXCEPTION
+
     }
 
     /**

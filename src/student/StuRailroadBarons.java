@@ -53,7 +53,6 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         for (Player player: mod_players) {
             for (int i = 0; i < 4 ;i++ ){
                 player.startTurn(pair);
-                i++;
             }
         }
 

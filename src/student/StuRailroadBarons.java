@@ -15,9 +15,15 @@ public class StuRailroadBarons implements model.RailroadBarons  {
 
     private ArrayList<RailroadBaronsObserver> observers;
     private ArrayList<Player> mod_players;
+    private ArrayList<Route> routes;
     private RailroadMap my_map;
     private Deck my_deck;
     private int turn = 0;
+
+    public StuRailroadBarons(RailroadMap my_map){
+        this.my_map = my_map;
+
+    }
 
     /**
      * Adds a Railroad observer
@@ -117,8 +123,9 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        if (getCurrentPlayer().canClaimRoute()){
-
+        Route route = my_map.getRoute(row, col);
+        if (getCurrentPlayer().canClaimRoute(route)){
+            getCurrentPlayer().claimRoute(route);
         }
 
     }

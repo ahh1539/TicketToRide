@@ -27,7 +27,6 @@ public class StuTrack implements model.Track{
         this.col = col;
         owner = Baron.UNCLAIMED;
         this.row = row;
-
     }
 
     /**

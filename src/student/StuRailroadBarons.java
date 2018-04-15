@@ -17,7 +17,9 @@ import java.util.Collection;
 public class StuRailroadBarons implements model.RailroadBarons  {
 
     private ArrayList<RailroadBaronsObserver> observers;
-    private ArrayList<StuPlayer> players;
+    private ArrayList<StuPlayer> stu_players;
+    private ArrayList<Player> mod_players;
+    private RailroadMap my_map;
 
     /**
      * Adds a Railroad observer
@@ -62,6 +64,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
+         map = my_map;
 
     }
 
@@ -127,8 +130,9 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public Collection<Player> getPlayers() {
-        return null;
+        return mod_players;
     }
+
 
     /**
      * Ends the game
@@ -136,6 +140,19 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public boolean gameIsOver() {
+        int num_players = 0;
+        for (Player player : stu_players) {
+            if (player.getNumberOfPieces() <= 0 ||
+                    player.canContinuePlaying(my_map.getLengthOfShortestUnclaimedRoute()) == false){
+                num_players++;
+            }
+            else {
+                continue;
+            }
+        }
+        if (num_players == stu_players.size()){
+            return true;
+        }
         return false;
     }
 }

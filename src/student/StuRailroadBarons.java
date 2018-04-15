@@ -4,6 +4,7 @@ import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 
 /**
@@ -13,10 +14,10 @@ import java.util.Collection;
 public class StuRailroadBarons implements model.RailroadBarons  {
 
     private ArrayList<RailroadBaronsObserver> observers;
-    private ArrayList<StuPlayer> stu_players;
     private ArrayList<Player> mod_players;
     private RailroadMap my_map;
     private Deck my_deck;
+    private int turn = 0;
 
     /**
      * Adds a Railroad observer
@@ -85,7 +86,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public RailroadMap getRailroadMap() {
-        return null;
+        return my_map;
     }
 
     /**
@@ -116,6 +117,9 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
+        if (getCurrentPlayer().canClaimRoute()){
+
+        }
 
     }
 
@@ -124,7 +128,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void endTurn() {
-
+        turn ++;
     }
 
     /**
@@ -132,7 +136,10 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public Player getCurrentPlayer() {
-        return null;
+        if (turn == 4){
+            turn = 1;
+        }
+        return mod_players.get(turn);
     }
 
     /**

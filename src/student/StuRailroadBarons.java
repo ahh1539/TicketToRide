@@ -17,6 +17,7 @@ import java.util.Collection;
 public class StuRailroadBarons implements model.RailroadBarons  {
 
     private ArrayList<RailroadBaronsObserver> observers;
+    private ArrayList<Player> players;
 
     /**
      * Adds a Railroad observer

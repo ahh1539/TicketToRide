@@ -24,11 +24,11 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
-        stu_players = new ArrayList<>();
-        stu_players.add(new StuPlayer(Baron.BLUE));
-        stu_players.add(new StuPlayer(Baron.RED));
-        stu_players.add(new StuPlayer(Baron.GREEN));
-        stu_players.add(new StuPlayer(Baron.YELLOW));
+        mod_players = new ArrayList<>();
+        mod_players.add(new StuPlayer(Baron.BLUE));
+        mod_players.add(new StuPlayer(Baron.RED));
+        mod_players.add(new StuPlayer(Baron.GREEN));
+        mod_players.add(new StuPlayer(Baron.YELLOW));
         observers = new ArrayList<>();
         observers.add(observer);
 

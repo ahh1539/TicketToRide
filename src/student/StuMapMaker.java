@@ -52,7 +52,7 @@ public class StuMapMaker implements model.MapMaker {
                         sName += " ";
                     }
                 }
-                sName = splitRegex[3]+splitRegex[4];
+                sName = splitRegex[3]; //+splitRegex[4];
 
                 stations.add(new StuStation(parseInt(splitRegex[0]), parseInt(splitRegex[1]), parseInt(splitRegex[2]), sName));
                 //need to add station name somehow (it can be multiple words long)
@@ -77,6 +77,8 @@ public class StuMapMaker implements model.MapMaker {
 
             int rows_checker = 0;
             int cols_checker = 0;
+
+
             for (StuStation s:stations) {
                 if (s.getRow()>rows_checker) {
                     rows_checker = s.getRow();

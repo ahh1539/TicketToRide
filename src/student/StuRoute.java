@@ -27,9 +27,9 @@ public class StuRoute implements model.Route {
      * @param end ending point of a route (a station)
      * @param baron a baron who can claim the route
      */
-    public StuRoute(model.Station start, model.Station end, Baron baron){
+    public StuRoute(StuStation start, StuStation end, Baron baron){
 
-        tracks = buildTracks();
+        tracks = new ArrayList<>();
         this.start = start;
         this.end = end;
         owner = baron;

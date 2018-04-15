@@ -20,6 +20,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     private ArrayList<StuPlayer> stu_players;
     private ArrayList<Player> mod_players;
     private RailroadMap my_map;
+    private Deck my_deck;
 
     /**
      * Adds a Railroad observer
@@ -51,11 +52,11 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         deck.reset();
         StuPair pair = new StuPair(deck);
         for (Player player: mod_players) {
+            player.reset();
             for (int i = 0; i < 4 ;i++ ){
                 player.startTurn(pair);
             }
         }
-
     }
 
     /**
@@ -65,7 +66,16 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-         map = my_map;
+        map = my_map;
+        deck = my_deck;
+        deck.reset();
+        StuPair pair = new StuPair(deck);
+        for (Player player: mod_players) {
+            player.reset();
+            for (int i = 0; i < 4 ;i++ ){
+                player.startTurn(pair);
+            }
+        }
 
     }
 

@@ -18,6 +18,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     private Integer rows;
     private Integer columns;
     private Baron baron;
+    private ArrayList<Route> unclaimed;
 
 
     /**
@@ -30,11 +31,23 @@ public class StuRailRoadBaronsMap implements RailroadMap{
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
-        for (int row = 0; row <= rows; row++) {
-            for (int col = 0; col <= columns; col++) {
-                spaces[row][col] = (new StuSpace(row, col));
+        for (Route route: routes){
+            this.routes.add(route);
+            this.unclaimed.add(route);
+            spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
+            spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
+            for (Track track: route.getTracks()) {
+                spaces[track.getRow()][track.getCol()] = track;
             }
         }
+        for (int row = 0; row <= rows; row++) {
+            for (int col = 0; col <= columns; col++) {
+                if (spaces[row][col] == null){
+                    spaces[row][col] = (new StuSpace(row, col));
+                }
+            }
+        }
+
     }
 
     /**

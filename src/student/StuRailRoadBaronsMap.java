@@ -31,6 +31,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
+        spaces = new Space[rows][columns];
         for (Route route: routes){
             this.routes.add(route);
             this.unclaimed.add(route);
@@ -138,6 +139,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
         for (RailroadMapObserver rail_obs: observers) {
             rail_obs.routeClaimed(this, route);
         }
+        unclaimed.remove(route);
         route.claim(route.getBaron());
 
     }

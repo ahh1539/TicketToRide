@@ -50,9 +50,11 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         StuDeck deck = new StuDeck();
         deck.reset();
         StuPair pair = new StuPair(deck);
-        for (StuPlayer player: players) {
-            player.startgameplayer();
-            player.startTurn(pair);
+        for (Player player: mod_players) {
+            for (int i = 0; i < 4 ;i++ ){
+                player.startTurn(pair);
+                i++;
+            }
         }
 
     }
@@ -141,16 +143,13 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     @Override
     public boolean gameIsOver() {
         int num_players = 0;
-        for (Player player : stu_players) {
+        for (Player player : mod_players) {
             if (player.getNumberOfPieces() <= 0 ||
                     player.canContinuePlaying(my_map.getLengthOfShortestUnclaimedRoute()) == false){
                 num_players++;
             }
-            else {
-                continue;
-            }
         }
-        if (num_players == stu_players.size()){
+        if (num_players == mod_players.size()){
             return true;
         }
         return false;

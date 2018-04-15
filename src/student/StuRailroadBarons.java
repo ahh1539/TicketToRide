@@ -45,6 +45,13 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void startAGameWith(RailroadMap map) {
+        for (Player player: players) {
+            StuDeck deck = new StuDeck();
+            deck.reset();
+            for (int i =0 ; i<=4; i++){
+                player.reset(deck.drawACard());
+            }
+        }
 
     }
 

@@ -38,6 +38,15 @@ public class StuPlayer implements model.Player {
         //back and none
     }
 
+    public void startgameplayer(){
+        StuDeck deck = new StuDeck();
+        deck.drawACard();
+        deck.drawACard();
+        deck.drawACard();
+        deck.drawACard();
+
+    }
+
     public HashMap<Card, Integer> createHand() {
         HashMap<Card,Integer> set = new HashMap<>();
         ArrayList<Card> cards = new ArrayList<>();

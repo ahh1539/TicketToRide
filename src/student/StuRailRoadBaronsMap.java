@@ -123,7 +123,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public void routeClaimed(Route route) {
         for (RailroadMapObserver rail_obs: observers) {
-            rail_obs.routeClaimed(this);
+            rail_obs.routeClaimed(this, route);
         }
         route.claim(route.getBaron());
 

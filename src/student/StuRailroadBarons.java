@@ -77,7 +77,6 @@ public class StuRailroadBarons implements model.RailroadBarons  {
                 player.startTurn(pair);
             }
         }
-
     }
 
     /**
@@ -95,7 +94,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public int numberOfCardsRemaining() {
-        return 0;
+        return my_deck.numberOfCardsRemaining();
     }
 
     /**

@@ -27,6 +27,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      * @param columns the number of columns
      * @param routes all of the routes on the map
      */
+
     public StuRailRoadBaronsMap(int rows, int columns, ArrayList<Route> routes){
         this.routes = routes;
         this.rows = rows;
@@ -34,7 +35,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
         spaces = new Space[rows][columns];
         for (Route route: routes){
             this.routes.add(route);
-            this.unclaimed.add(route);
+            //this.unclaimed.add(route);
             spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
             spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
             for (Track track: route.getTracks()) {

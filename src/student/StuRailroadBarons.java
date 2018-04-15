@@ -112,6 +112,10 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
+        Route route = my_map.getRoute(row,col);
+        if (getCurrentPlayer().canClaimRoute(route) == true){
+            return true;
+        }
         return false;
     }
 
@@ -124,10 +128,22 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
         Route route = my_map.getRoute(row, col);
-        if (getCurrentPlayer().canClaimRoute(route)){
+        if (canCurrentPlayerClaimRoute(row, col) == true){
             getCurrentPlayer().claimRoute(route);
         }
-
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
+        //NOT DONE NEVER THREW EXCEPTION
     }
 
     /**

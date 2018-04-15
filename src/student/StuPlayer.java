@@ -39,11 +39,12 @@ public class StuPlayer implements model.Player {
     }
 
     public HashMap<Card, Integer> createHand() {
-        HashMap<Card,Integer> temp = new HashMap<>();
+        HashMap<Card,Integer> set = new HashMap<>();
         ArrayList<Card> cards = new ArrayList<>();
         cards.add(Card.BLACK);
         cards.add(Card.BLUE);
         cards.add(Card.WHITE);
+
         cards.add(Card.GREEN);
         cards.add(Card.ORANGE);
         cards.add(Card.PINK);
@@ -51,9 +52,9 @@ public class StuPlayer implements model.Player {
         cards.add(Card.WILD);
         cards.add(Card.YELLOW);
         for (Card card: cards) {
-            temp.put(card,0);
+            set.put(card,0);
         }
-        return temp;
+        return set;
     }
 
     /**
@@ -74,6 +75,7 @@ public class StuPlayer implements model.Player {
         }
         observers.clear();
         routes.clear();
+
     }
 
     /**

@@ -42,8 +42,19 @@ public class StuMapMaker implements model.MapMaker {
                 fileLine = mapReader.nextLine();
                 splitRegex = fileLine.split(" ");
             }
-            if (counter == 0) {
-                stations.add(new StuStation(parseInt(splitRegex[0]), parseInt(splitRegex[1]), parseInt(splitRegex[2]), splitRegex[3]));
+
+            if (counter==0) {
+                String sName = "";
+                int size = splitRegex.length;
+                for (int x=3; x<size;x++) {
+                    sName += splitRegex[x];
+                    if (x!=size-1) {
+                        sName += " ";
+                    }
+                }
+                sName = splitRegex[3]+splitRegex[4];
+
+                stations.add(new StuStation(parseInt(splitRegex[0]), parseInt(splitRegex[1]), parseInt(splitRegex[2]), sName));
                 //need to add station name somehow (it can be multiple words long)
             } else {
                 Baron tempVar = Baron.UNCLAIMED;

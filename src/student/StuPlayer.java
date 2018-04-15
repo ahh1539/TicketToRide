@@ -6,10 +6,7 @@ import model.PlayerObserver;
 import model.Route;
 
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Observer;
+import java.util.*;
 
 /**
  * @author Brett Farruggia & Alex Hurley
@@ -33,7 +30,30 @@ public class StuPlayer implements model.Player {
      */
     public StuPlayer(Baron player){
         this.player = player;
+        this.pieces = 45;
+        this.score = 0;
+        routes = new ArrayList<>();
+        player_cards = createHand();
+
         //back and none
+    }
+
+    public HashMap<Card, Integer> createHand() {
+        HashMap<Card,Integer> temp = new HashMap<>();
+        ArrayList<Card> cards = new ArrayList<>();
+        cards.add(Card.BLACK);
+        cards.add(Card.BLUE);
+        cards.add(Card.WHITE);
+        cards.add(Card.GREEN);
+        cards.add(Card.ORANGE);
+        cards.add(Card.PINK);
+        cards.add(Card.RED);
+        cards.add(Card.WILD);
+        cards.add(Card.YELLOW);
+        for (Card card: cards) {
+            temp.put(card,0);
+        }
+        return temp;
     }
 
     /**

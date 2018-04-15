@@ -6,6 +6,7 @@ import model.RailroadBaronsException;
 import model.RailroadBaronsObserver;
 import model.RailroadMap;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 
@@ -15,12 +16,15 @@ import java.util.Collection;
  */
 public class StuRailroadBarons implements model.RailroadBarons  {
 
+    private ArrayList<RailroadBaronsObserver> observers;
+
     /**
      * Adds a Railroad observer
      * @param observer The Railroad observer
      */
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
+        observers.add(observer);
 
     }
 
@@ -30,6 +34,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void removeRailroadBaronsObserver(RailroadBaronsObserver observer) {
+        observers.remove(observer);
 
     }
 
@@ -84,7 +89,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     /**
      * Claims a route
      * @param row The row
-     * @param col The column
+      * @param col The column
      * @throws RailroadBaronsException
      */
     @Override

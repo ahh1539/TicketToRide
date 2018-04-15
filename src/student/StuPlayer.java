@@ -96,6 +96,7 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
+        observers = new ArrayList<>();
         observers.add(observer);
     }
 

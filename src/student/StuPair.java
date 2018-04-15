@@ -1,6 +1,7 @@
 package student;
 
 import model.Card;
+import model.Deck;
 
 /**
  * Author : Brett Farruggia
@@ -15,7 +16,7 @@ public class StuPair implements model.Pair {
      * creates a pair of cards for the next turn
      * @param deck the deck which the cards are drawn form
      */
-    public StuPair(StuDeck deck){
+    public StuPair(Deck deck){
         this.card_one = deck.drawACard();
         this.card_two = deck.drawACard();
 

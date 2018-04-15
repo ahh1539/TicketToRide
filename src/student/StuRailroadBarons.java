@@ -1,10 +1,6 @@
 package student;
 
-import model.Deck;
-import model.Player;
-import model.RailroadBaronsException;
-import model.RailroadBaronsObserver;
-import model.RailroadMap;
+import model.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +24,12 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
+        stu_players = new ArrayList<>();
+        stu_players.add(new StuPlayer(Baron.BLUE));
+        stu_players.add(new StuPlayer(Baron.RED));
+        stu_players.add(new StuPlayer(Baron.GREEN));
+        stu_players.add(new StuPlayer(Baron.YELLOW));
+        observers = new ArrayList<>();
         observers.add(observer);
 
     }
@@ -67,9 +69,8 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
         map = my_map;
-        deck = my_deck;
         deck.reset();
-        StuPair pair = new StuPair(deck);
+        StuPair pair = new StuPair(my_deck);
         for (Player player: mod_players) {
             player.reset();
             for (int i = 0; i < 4 ;i++ ){

@@ -17,7 +17,7 @@ import java.util.Collection;
 public class StuRailroadBarons implements model.RailroadBarons  {
 
     private ArrayList<RailroadBaronsObserver> observers;
-    private ArrayList<Player> players;
+    private ArrayList<StuPlayer> players;
 
     /**
      * Adds a Railroad observer
@@ -45,12 +45,12 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void startAGameWith(RailroadMap map) {
-        for (Player player: players) {
-            StuDeck deck = new StuDeck();
-            deck.reset();
-            for (int i =0 ; i<=4; i++){
-                player.reset(deck.drawACard());
-            }
+        StuDeck deck = new StuDeck();
+        deck.reset();
+        StuPair pair = new StuPair(deck);
+        for (StuPlayer player: players) {
+            player.startgameplayer();
+            player.startTurn(pair);
         }
 
     }

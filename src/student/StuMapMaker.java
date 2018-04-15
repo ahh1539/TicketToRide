@@ -81,9 +81,11 @@ public class StuMapMaker implements model.MapMaker {
 
             for (StuStation s:stations) {
                 if (s.getRow()>rows_checker) {
+
                     rows_checker = s.getRow();
                 }
                 if (s.getCol()>cols_checker) {
+
                     cols_checker = s.getCol();
                 }
             }

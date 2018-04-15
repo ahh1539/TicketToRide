@@ -47,6 +47,10 @@ public class StuPlayer implements model.Player {
 
     }
 
+    /**
+     * Create hand
+     * @return a new hand, cards set to 0
+     */
     public HashMap<Card, Integer> createHand() {
         HashMap<Card,Integer> set = new HashMap<>();
         ArrayList<Card> cards = new ArrayList<>();
@@ -57,6 +61,8 @@ public class StuPlayer implements model.Player {
         cards.add(Card.GREEN);
         cards.add(Card.ORANGE);
         cards.add(Card.PINK);
+
+
         cards.add(Card.RED);
         cards.add(Card.WILD);
         cards.add(Card.YELLOW);

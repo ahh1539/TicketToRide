@@ -29,7 +29,7 @@ public class StuRoute implements model.Route {
      */
     public StuRoute(StuStation start, StuStation end, Baron baron){
 
-        tracks = new ArrayList<>();
+        tracks = buildTracks();
         this.start = start;
         this.end = end;
         owner = baron;
@@ -42,16 +42,16 @@ public class StuRoute implements model.Route {
 
     public ArrayList<Track> buildTracks() {
         ArrayList<Track> newTracks = new ArrayList<>();
-        //int rDiff = abs(end.getRow() - start.getRow());
-        //int cDiff = abs(end.getCol() - start.getCol());
         if (ori==Orientation.VERTICAL) {
             for (int x = start.getRow()+1; x < end.getRow(); x++) {
                 newTracks.add(new StuTrack(this, start.getCol(),x));
             }
         } else {
+            /**
             for (int x = start.getCol()+1; x < end.getCol(); x++) {
                 newTracks.add(new StuTrack(this, x, start.getRow()));
             }
+             **/
         }
         return newTracks;
     }

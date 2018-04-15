@@ -67,6 +67,9 @@ public class StuPlayer implements model.Player {
         for (Card card1: dealt) {
             player_cards.put(card1, 0);
         }
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
 
         pieces = 45;
         score = 0;
@@ -85,7 +88,6 @@ public class StuPlayer implements model.Player {
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
         observers.add(observer);
-
     }
 
     /**
@@ -114,6 +116,9 @@ public class StuPlayer implements model.Player {
     public void startTurn(Pair dealt) {
         canClaim = true;
         last = dealt;
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
     }
 
     /**
@@ -122,6 +127,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public Pair getLastTwoCards() {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         return last;
     }
 
@@ -137,7 +145,11 @@ public class StuPlayer implements model.Player {
         for (int num: player_cards.values()) {
             num_cards = num_cards + num;
         }
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         return num_cards;
+
     }
 
     /**
@@ -146,6 +158,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public int getNumberOfPieces() {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         return pieces;
     }
 
@@ -156,6 +171,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public boolean canClaimRoute(Route route) {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         int wild = 0;
         int max_cards = 0;
         for (Card carddd: player_cards.keySet()) {
@@ -187,6 +205,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         if (canClaimRoute(route) == true) {
 
             canClaim = false;
@@ -216,6 +237,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public Collection<Route> getClaimedRoutes() {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         return routes;
     }
 
@@ -225,6 +249,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public int getScore() {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         return score;
     }
 
@@ -237,6 +264,9 @@ public class StuPlayer implements model.Player {
      */
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
+        for (PlayerObserver playa: observers) {
+            playa.playerChanged(this);
+        }
         int max_cards = 0;
         int wild = 0;
         for (Card carddd : player_cards.keySet()) {

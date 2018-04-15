@@ -13,7 +13,7 @@ import java.util.Collection;
 public class StuRailRoadBaronsMap implements RailroadMap{
 
     public Space[][] spaces;
-    public ArrayList observers;
+    public ArrayList<RailroadMapObserver> observers;
     public ArrayList<model.Route> routes;
     private Integer rows;
     private Integer columns;
@@ -122,6 +122,9 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public void routeClaimed(Route route) {
+        for (RailroadMapObserver rail_obs: observers) {
+            rail_obs.routeClaimed(this);
+        }
         route.claim(route.getBaron());
 
     }

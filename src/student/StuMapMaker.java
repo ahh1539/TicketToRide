@@ -89,7 +89,7 @@ public class StuMapMaker implements model.MapMaker {
                     cols_checker = s.getCol();
                 }
             }
-        return new StuRailRoadBaronsMap(rows_checker, cols_checker, routes);
+        return new StuRailRoadBaronsMap(routes);
     }
 
     /**

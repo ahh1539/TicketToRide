@@ -28,7 +28,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      * @param routes all of the routes on the map
      */
 
-    public StuRailRoadBaronsMap( ArrayList<Route> routes){
+    public StuRailRoadBaronsMap(int rows, int columns, ArrayList<Route> routes){
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;

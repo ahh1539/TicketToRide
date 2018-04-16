@@ -14,11 +14,10 @@ public class StuPair implements model.Pair {
 
     /**
      * creates a pair of cards for the next turn
-     * @param deck the deck which the cards are drawn form
      */
-    public StuPair(Deck deck){
-        this.card_one = deck.drawACard();
-        this.card_two = deck.drawACard();
+    public StuPair(Card card1, Card card2){
+        this.card_one = card1;
+        this.card_two = card2;
 
 
     }

@@ -13,29 +13,29 @@ import java.util.Collection;
 public class StuRailRoadBaronsMap implements RailroadMap{
 
     public Space[][] spaces;
-    public ArrayList<RailroadMapObserver> observers;
-    public ArrayList<model.Route> routes;
-    private Integer rows;
-    private Integer columns;
+    public ArrayList<RailroadMapObserver> observers = new ArrayList<>();
+    public ArrayList<model.Route> routes = new ArrayList<>();
+    private int rows;
+    private int columns;
     private Baron baron;
-    private ArrayList<Route> unclaimed;
+    private ArrayList<Route> unclaimed = new ArrayList<>();
 
 
     /**
      * Constructs a railroad baron map
-     * @param rows the number of rows
-     * @param columns the number of columns
+     * //@param rows the number of rows
+     * //@param columns the number of columns
      * @param routes all of the routes on the map
      */
 
-    public StuRailRoadBaronsMap(int rows, int columns, ArrayList<Route> routes){
+    public StuRailRoadBaronsMap( ArrayList<Route> routes){
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
         spaces = new Space[rows][columns];
         for (Route route: routes){
             this.routes.add(route);
-            //this.unclaimed.add(route);
+            this.unclaimed.add(route);
             spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
             spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
             for (Track track: route.getTracks()) {
@@ -177,5 +177,13 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public Collection<Route> getRoutes() {
         return routes;
+    }
+
+    public ArrayList<RailroadMapObserver> getObservers() {
+        return observers;
+    }
+
+    public ArrayList<Route> getUnclaimed() {
+        return unclaimed;
     }
 }

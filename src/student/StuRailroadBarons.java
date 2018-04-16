@@ -28,10 +28,10 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
         mod_players = new ArrayList<>();
-        mod_players.add(new StuPlayer(Baron.BLUE));
-        mod_players.add(new StuPlayer(Baron.RED));
-        mod_players.add(new StuPlayer(Baron.GREEN));
-        mod_players.add(new StuPlayer(Baron.YELLOW));
+        mod_players.add(new student.StuPlayer(Baron.BLUE));
+        mod_players.add(new student.StuPlayer(Baron.RED));
+        mod_players.add(new student.StuPlayer(Baron.GREEN));
+        mod_players.add(new student.StuPlayer(Baron.YELLOW));
         observers = new ArrayList<>();
         observers.add(observer);
 
@@ -55,7 +55,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     public void startAGameWith(RailroadMap map) {
         StuDeck deck = new StuDeck();
         deck.reset();
-        StuPair pair = new StuPair(deck);
+        StuPair pair = new StuPair(deck.drawACard(), deck.drawACard());
         for (Player player: mod_players) {
             player.reset();
             for (int i = 0; i < 4 ;i++ ){
@@ -73,7 +73,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     public void startAGameWith(RailroadMap map, Deck deck) {
         map = my_map;
         deck.reset();
-        StuPair pair = new StuPair(my_deck);
+        StuPair pair = new StuPair(deck.drawACard(), deck.drawACard());
         for (Player player: mod_players) {
             player.reset();
             for (int i = 0; i < 4 ;i++ ){

@@ -23,7 +23,6 @@ public class StuStation implements model.Station{
         this.name=name;
         this.col=col;
         this.row=row;
-        this.ident=ident;
     }
 
     /**

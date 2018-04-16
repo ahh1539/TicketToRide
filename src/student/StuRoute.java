@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class StuRoute implements model.Route {
 
-    private ArrayList<Track> tracks;
+    private ArrayList<Track> tracks = new ArrayList<>();
     private model.Station start;
     private model.Station end;
     private Baron owner;
@@ -29,32 +29,38 @@ public class StuRoute implements model.Route {
      */
     public StuRoute(StuStation start, StuStation end, Baron baron){
 
-        tracks = buildTracks();
+
         this.start = start;
         this.end = end;
         owner = baron;
         if (start.getRow()==end.getRow()) {
             ori=Orientation.HORIZONTAL;
+            for (int i = start.getCol() + 1; i< end.getCol();i++){
+                tracks.add(new StuTrack(this,i, start.getRow()));
+            }
         } else {
             ori=Orientation.VERTICAL;
+            for (int j = start.getRow() +1; j <end.getRow();j++){
+                tracks.add(new StuTrack(this, start.getCol(),j));
+            }
         }
     }
 
-    public ArrayList<Track> buildTracks() {
-        ArrayList<Track> newTracks = new ArrayList<>();
-        if (ori==Orientation.VERTICAL) {
-            for (int x = start.getRow()+1; x < end.getRow(); x++) {
-                newTracks.add(new StuTrack(this, start.getCol(),x));
-            }
-        } else {
-            /**
-            for (int x = start.getCol()+1; x < end.getCol(); x++) {
-                newTracks.add(new StuTrack(this, x, start.getRow()));
-            }
-             **/
-        }
-        return newTracks;
-    }
+    //public ArrayList<Track> buildTracks() {
+      //  ArrayList<Track> newTracks = new ArrayList<>();
+        //if (ori==Orientation.VERTICAL) {
+          //  for (int x = start.getRow()+1; x < end.getRow(); x++) {
+            //    newTracks.add(new StuTrack(this, start.getCol(),x));
+            //}
+        //} else {
+          //  /**
+            //for (int x = start.getCol()+1; x < end.getCol(); x++) {
+              //  newTracks.add(new StuTrack(this, x, start.getRow()));
+            //}
+             //**/
+        //}
+        //return newTracks;
+   // }
 
     @Override
     public Baron getBaron() {
@@ -88,17 +94,24 @@ public class StuRoute implements model.Route {
 
     @Override
     public int getPointValue() {
-        return 0;
+        return this.tracks.size();
     }
 
     @Override
     public boolean includesCoordinate(Space space) {
+        boolean tracker = false;
         for (Track track: tracks) {
-            if (track.collocated(space)) {
-                return true;
+            if (track.getCol() == space.getCol() && track.getRow() == space.getRow()) {
+                tracker=true;
             }
         }
-        return false;
+        if (start.getCol() == space.getCol() && space.getRow() == space.getRow()){
+            tracker = true;
+        }
+        if (end.getCol() == space.getCol() && end.getRow() == space.getRow()){
+            tracker = true;
+        }
+        return tracker;
     }
 
     @Override

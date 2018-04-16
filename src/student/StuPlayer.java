@@ -3,7 +3,10 @@ package student;
 import model.*;
 import model.Pair;
 import model.PlayerObserver;
+import model.Card;
+import model.Baron;
 import model.Route;
+import student.StuDeck;
 
 import java.security.Key;
 import java.util.*;
@@ -14,7 +17,7 @@ import java.util.*;
 
 public class StuPlayer implements model.Player {
 
-    private Baron player;
+    private model.Baron player;
     private int pieces;
     private int score;
     private HashMap<Card,Integer> player_cards;
@@ -28,7 +31,7 @@ public class StuPlayer implements model.Player {
      * The constructor, takes a player
      * @param player the player
      */
-    public StuPlayer(Baron player){
+    public StuPlayer(model.Baron player){
         this.player = player;
         this.pieces = 45;
         this.score = 0;
@@ -166,6 +169,34 @@ public class StuPlayer implements model.Player {
         }
         return num_cards;
 
+    }
+
+    public Baron getPlayer() {
+        return player;
+    }
+
+    public int getPieces() {
+        return pieces;
+    }
+
+    public HashMap<Card, Integer> getPlayer_cards() {
+        return player_cards;
+    }
+
+    public ArrayList<PlayerObserver> getObservers() {
+        return observers;
+    }
+
+    public ArrayList<Route> getRoutes() {
+        return routes;
+    }
+
+    public boolean isCanClaim() {
+        return canClaim;
+    }
+
+    public Pair getLast() {
+        return last;
     }
 
     /**

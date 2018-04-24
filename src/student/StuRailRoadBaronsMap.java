@@ -12,13 +12,11 @@ import java.util.Collection;
 
 public class StuRailRoadBaronsMap implements RailroadMap{
 
-    public Space[][] spaces;
-    public ArrayList<RailroadMapObserver> observers = new ArrayList<>();
-    public ArrayList<model.Route> routes = new ArrayList<>();
-    private int rows;
-    private int columns;
-    private Baron baron;
-    private ArrayList<Route> unclaimed = new ArrayList<>();
+    private int Rows;
+    private int Cols;
+    Space[][] spaces;
+    private ArrayList<Route> routes;
+    private ArrayList<RailroadMapObserver> observers;
 
 
     /**
@@ -28,29 +26,31 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      * @param routes all of the routes on the map
      */
 
-    public StuRailRoadBaronsMap(int rows, int columns, ArrayList<Route> routes){
+    public StuRailRoadBaronsMap(int rows, int cols, ArrayList<Route> routes) {
+
+        spaces = new Space[rows][cols];
+        this.Rows = rows;
+        this.Cols = cols;
         this.routes = routes;
-        this.rows = rows;
-        this.columns = columns;
-        spaces = new Space[rows+1][columns+1];
-        for (Route route: routes){
-            this.routes.add(route);
-            this.unclaimed.add(route);
-            spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
-            spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
-            for (Track track: route.getTracks()) {
-                spaces[track.getRow()][track.getCol()] = track;
-            }
-        }
-        for (int row = 0; row <= rows; row++) {
-            for (int col = 0; col <= columns; col++) {
-                if (spaces[row][col] == null){
-                    spaces[row][col] = (new StuSpace(row, col));
+        observers = new ArrayList<>();
+        createSpaces();
+    }
+
+
+
+        public void createSpaces(){
+            for (Route route: routes) {
+                spaces[route.getOrigin().getRow()][route.getOrigin().getCol()]
+                        = route.getOrigin();
+
+                spaces[route.getDestination().getRow()][route.getDestination().getCol()]
+                        = route.getDestination();
+
+                for (Track tr: route.getTracks()) {
+                    spaces[tr.getRow()][tr.getCol()] = tr;
                 }
             }
         }
-
-    }
 
     /**
      * Adds the observer to the map
@@ -79,8 +79,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public int getRows() {
         //assumes at least one row
-        int num_rows = spaces.length;
-        return num_rows;
+        return Rows;
     }
 
     /**
@@ -90,8 +89,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     @Override
     public int getCols() {
         //assumes at least one col
-        int num_cols = spaces[0].length;
-        return num_cols;
+        return Cols;
 
     }
 
@@ -117,16 +115,11 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public Route getRoute(int row, int col) {
-        for (Route route: routes) {
-            ArrayList<model.Track> tracks = (ArrayList) route.getTracks();
-            StuTrack track = new StuTrack(route,col,row);
-            for (Track find: tracks) {
-                if (find == track){
-                    return route;
-                }
+        for(Route r: routes) {
+            if(r.includesCoordinate(getSpace(row, col))) {
+                return r;
             }
         }
-        // look into changing the track constructor to implement space
         return null;
     }
 
@@ -137,12 +130,9 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public void routeClaimed(Route route) {
-        for (RailroadMapObserver rail_obs: observers) {
-            rail_obs.routeClaimed(this, route);
+        for (RailroadMapObserver r:observers) {
+            r.routeClaimed(this,route);
         }
-        unclaimed.remove(route);
-        route.claim(route.getBaron());
-
     }
 
     /**
@@ -151,23 +141,15 @@ public class StuRailRoadBaronsMap implements RailroadMap{
      */
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        int temp;
-        int shortest = 1000000000;
-        for (int i = 0; i <= routes.size(); i++){
-            if (routes.get(i).getBaron() == Baron.UNCLAIMED){
-                temp = routes.get(i).getLength();
-                if (temp < shortest){
-                    shortest = temp;
+        int n = 100000;
+        for(Route r: routes) {
+            if(r.getBaron() == Baron.UNCLAIMED) {
+                if(r.getLength() < n) {
+                    n = r.getLength();
                 }
-                else {
-                    i++;
-                }
-            }
-            else{
-                i++;
             }
         }
-        return shortest;
+        return n;
     }
 
     /**
@@ -181,9 +163,5 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     public ArrayList<RailroadMapObserver> getObservers() {
         return observers;
-    }
-
-    public ArrayList<Route> getUnclaimed() {
-        return unclaimed;
     }
 }

@@ -98,6 +98,21 @@ public class StuPlayer implements model.Player {
         routes.clear();
 
     }
+    public void setTrainPieces(int n){
+        pieces = n;
+    }
+
+    public HashMap getHand(){
+        return player_cards;
+    }
+
+    public void setHasClaimedRoute(Boolean booollyy){
+        canClaim = booollyy;
+    }
+
+    public Boolean isHasClaimedRoute(){
+        return canClaim;
+    }
 
     /**
      * Adds observer

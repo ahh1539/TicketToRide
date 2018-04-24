@@ -28,6 +28,10 @@ public class StuMapMaker implements model.MapMaker {
      */
     @Override
     public RailroadMap readMap(InputStream in) throws RailroadBaronsException {
+        Scanner map_info = new Scanner(in);
+        ArrayList<StuStation> stations = new ArrayList<>();
+
+        /*
         Scanner mapReader = new Scanner(in);
         String fileLine;
         ArrayList<StuStation> stations = new ArrayList<>();
@@ -89,7 +93,10 @@ public class StuMapMaker implements model.MapMaker {
                     cols_checker = s.getCol();
                 }
             }
-        return new StuRailRoadBaronsMap(rows_checker, cols_checker, routes);
+            */
+        ArrayList<Route> routes = null;
+        return new StuRailRoadBaronsMap(20,20, routes);
+
     }
 
     /**

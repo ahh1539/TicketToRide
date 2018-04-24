@@ -32,7 +32,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
         this.routes = routes;
         this.rows = rows;
         this.columns = columns;
-        spaces = new Space[rows][columns];
+        spaces = new Space[rows+1][columns+1];
         for (Route route: routes){
             this.routes.add(route);
             this.unclaimed.add(route);

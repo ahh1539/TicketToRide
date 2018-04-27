@@ -9,15 +9,19 @@ import java.util.Collection;
 import java.util.TreeMap;
 
 public class StuPlayer implements Player {
-    private Baron baron;
-    private ArrayList<Route> claimedRoutes;
-    private TreeMap<Card, Integer> hand;
-    private boolean claimedThisTurn;
-    private int trainPieces;
-    private int score;
-    private Pair lastPair;
     private Card lastCard;
     private Card secondLastCard;
+
+    private Baron baron;
+    private ArrayList<Route> claimedRoutes;
+    private TreeMap<Card, Integer> playerHand;
+    private boolean claimedThisTurn;
+
+    private int trains;
+    private int scoreTotal;
+    private Pair lastPair;
+
+
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
     /**
@@ -28,15 +32,15 @@ public class StuPlayer implements Player {
         claimedThisTurn = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
-        hand = createHand();
-        trainPieces = 45;
-        score = 0;
+        playerHand = createHand();
+        trains = 45;
+        scoreTotal = 0;
         lastCard = Card.NONE;
         secondLastCard = Card.NONE;
     }
 
     /**
-     * @return - Cards in the player's hand.
+     * @return - Cards in the player's playerHand.
      */
     public TreeMap<Card, Integer> createHand() {
         TreeMap<Card,Integer> temp = new TreeMap<>();
@@ -57,21 +61,21 @@ public class StuPlayer implements Player {
     }
 
     /**
-     * Resets the player's hand.
+     * Resets the player's playerHand.
      * @param dealt
      */
     @Override
     public void reset(Card... dealt) {
-        trainPieces = 45;
-        score = 0;
+        trains = 45;
+        scoreTotal = 0;
         claimedRoutes.clear();
         lastCard = Card.NONE;
         secondLastCard = Card.NONE;
-        for (int cards:hand.values()) {
+        for (int cards:playerHand.values()) {
             cards = 0;
         }
         for (int x=0;x<4;x++) {
-            hand.put(dealt[x], hand.get(dealt[x]) + 1);
+            playerHand.put(dealt[x], playerHand.get(dealt[x]) + 1);
         }
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
@@ -111,12 +115,12 @@ public class StuPlayer implements Player {
     @Override
     public void startTurn(Pair dealt) {
         lastPair = dealt;
-        for (Card c:hand.keySet()) {
+        for (Card c:playerHand.keySet()) {
             if (c==lastPair.getFirstCard()) {
-                hand.put(c,hand.get(c)+1);
+                playerHand.put(c,playerHand.get(c)+1);
             }
             if (c==lastPair.getSecondCard()) {
-                hand.put(c,hand.get(c)+1);
+                playerHand.put(c,playerHand.get(c)+1);
             }
         }
         claimedThisTurn = false;
@@ -135,11 +139,11 @@ public class StuPlayer implements Player {
 
     /**
      * @param card The {@link Card} of interest.
-     * @return - Cards in the player's hand.
+     * @return - Cards in the player's playerHand.
      */
     @Override
     public int countCardsInHand(Card card) {
-        return hand.get(card);
+        return playerHand.get(card);
     }
 
     /**
@@ -148,7 +152,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public int getNumberOfPieces() {
-        return trainPieces;
+        return trains;
     }
 
     /**
@@ -175,12 +179,14 @@ public class StuPlayer implements Player {
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
         if (canClaimRoute(route)) {
+
             route.claim(baron);
             playCards(route);
             claimedRoutes.add(route);
-            score += route.getPointValue();
-            trainPieces -= route.getLength();
+            scoreTotal += route.getPointValue();
+            trains -= route.getLength();
             claimedThisTurn = true;
+
         }
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
@@ -196,11 +202,11 @@ public class StuPlayer implements Player {
     }
 
     /**
-     * @return - the player's score.
+     * @return - the player's scoreTotal.
      */
     @Override
     public int getScore() {
-        return score;
+        return scoreTotal;
     }
 
     /**
@@ -226,13 +232,14 @@ public class StuPlayer implements Player {
     public boolean checkCardAmounts(int routeLength) {
         int mostCards = 0;
         int wildCards = 0;
-        for (Card card: hand.keySet()) {
+
+        for (Card card: playerHand.keySet()) {
             if (card==Card.WILD) {
-                wildCards = hand.get(card);
+                wildCards = playerHand.get(card);
             }
             else {
-                if (hand.get(card)>mostCards) {
-                    mostCards = hand.get(card);
+                if (playerHand.get(card)>mostCards) {
+                    mostCards = playerHand.get(card);
                 }
             }
         }
@@ -251,21 +258,21 @@ public class StuPlayer implements Player {
      */
     public void playCards(Route route) {
         boolean played = false;
-        for (Card card : hand.keySet()) {
+        for (Card card : playerHand.keySet()) {
             if (card != Card.WILD) {
-                if (hand.get(card) >= route.getLength()) {
-                    hand.put(card, hand.get(card)-route.getLength());
+                if (playerHand.get(card) >= route.getLength()) {
+                    playerHand.put(card, playerHand.get(card)-route.getLength());
                     played = true;
                     break;
                 }
             }
         }
         if (!played) {
-            for (Card card : hand.keySet()) {
+            for (Card card : playerHand.keySet()) {
                 if (card != Card.WILD) {
-                    if (hand.get(card) == route.getLength() - 1 && hand.get(Card.WILD) >= 1) {
-                        hand.put(card, hand.get(card) - (route.getLength() - 1));
-                        hand.put(Card.WILD, hand.get(Card.WILD) - 1);
+                    if (playerHand.get(card) == route.getLength() - 1 && playerHand.get(Card.WILD) >= 1) {
+                        playerHand.put(card, playerHand.get(card) - (route.getLength() - 1));
+                        playerHand.put(Card.WILD, playerHand.get(Card.WILD) - 1);
                         break;
                     }
                 }
@@ -281,6 +288,6 @@ public class StuPlayer implements Player {
         if (baron==Baron.YELLOW) {return "YELLOW Baron";}
         if (baron==Baron.GREEN) {return "GREEN Baron";}
         if (baron==Baron.BLUE) {return "BLUE Baron";}
-        return "broke";
+        return ("Failed");
     }
 }

@@ -316,7 +316,7 @@ public class RailroadBaronsController implements RailroadMapObserver,
 
     /**
      * Updates the {@linkplain PlayerControlPane player control pane} in
-     * response to a change in the state of the specified {@link Player}.
+     * response to a diff in the state of the specified {@link Player}.
      *
      * @param player The {@link Player} of interest.
      */

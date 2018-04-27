@@ -28,75 +28,64 @@ public class StuMapMaker implements model.MapMaker {
      */
     @Override
     public RailroadMap readMap(InputStream in) throws RailroadBaronsException {
-        Scanner map_info = new Scanner(in);
-        ArrayList<StuStation> stations = new ArrayList<>();
-
-        /*
-        Scanner mapReader = new Scanner(in);
-        String fileLine;
+        Scanner fileReader = new Scanner(in);
+        String line;
         ArrayList<StuStation> stations = new ArrayList<>();
         ArrayList<Route> routes = new ArrayList<>();
-        int counter = 0;
+        int diff = 0;
 
-        while (mapReader.hasNextLine()) {
-            fileLine = mapReader.nextLine();
-            String[] splitRegex = fileLine.split(" ");
-            if (splitRegex.length == 1) {
-                counter = counter + 1;
-                fileLine = mapReader.nextLine();
-                splitRegex = fileLine.split(" ");
+        while (fileReader.hasNextLine()) {
+            line = fileReader.nextLine();
+            String[] split = line.split(" ");
+            if (split.length==1) {
+                diff+=1;
+                line = fileReader.nextLine();
+                split = line.split(" ");
             }
 
-            if (counter==0) {
-                String sName = "";
-                int size = splitRegex.length;
+            if (diff==0) {
+                String stationName = "";
+                int size = split.length;
                 for (int x=3; x<size;x++) {
-                    sName += splitRegex[x];
+                    stationName += split[x];
                     if (x!=size-1) {
-                        sName += " ";
+                        stationName += " ";
                     }
                 }
-                sName = splitRegex[3]; //+splitRegex[4];
-
-                stations.add(new StuStation(parseInt(splitRegex[0]), parseInt(splitRegex[1]), parseInt(splitRegex[2]), sName));
-                //need to add station name somehow (it can be multiple words long)
+                stations.add(new StuStation(stationName,
+                        parseInt(split[0]),parseInt(split[1]),parseInt(split[2])));
             } else {
-                Baron tempVar = Baron.UNCLAIMED;
-                if (splitRegex[2].equals("UNCLAIMED")) {
-                    tempVar = Baron.UNCLAIMED;
-                } else if (splitRegex[2].equals("GREEN")) {
-                    tempVar = Baron.GREEN;
-                } else if (splitRegex[2].equals("RED")) {
-                    tempVar = Baron.RED;
-                } else if (splitRegex[2].equals("BLUE")) {
-                    tempVar = Baron.BLUE;
-                } else if (splitRegex[2].equals("YELLOW")) {
-                    tempVar = Baron.YELLOW;
+                Baron tempBaron = Baron.UNCLAIMED;
+                if (split[2].equals("UNCLAIMED")) {
+                    tempBaron = Baron.UNCLAIMED;
+
+                } else if (split[2].equals("GREEN")) {
+                    tempBaron = Baron.GREEN;
+
+                } else if (split[2].equals("BLUE")) {
+                    tempBaron = Baron.BLUE;
+
+                } else if (split[2].equals("YELLOW")) {
+                    tempBaron = Baron.YELLOW;
+
+                } else if (split[2].equals("RED")) {
+                    tempBaron = Baron.RED;
                 }
-
-                routes.add(new StuRoute(stations.get(parseInt(splitRegex[0])), stations.get(parseInt(splitRegex[1])), tempVar));
-
+                routes.add(new StuRoute(stations.get(parseInt(split[0])),
+                        stations.get(parseInt(split[1])), tempBaron));
             }
         }
-
-            int rows_checker = 0;
-            int cols_checker = 0;
-
-
-            for (StuStation s:stations) {
-                if (s.getRow()>rows_checker) {
-
-                    rows_checker = s.getRow();
-                }
-                if (s.getCol()>cols_checker) {
-
-                    cols_checker = s.getCol();
-                }
+        int rows = 0;
+        int cols = 0;
+        for (StuStation s:stations) {
+            if (s.getRow()>rows) {
+                rows = s.getRow();
             }
-            */
-        ArrayList<Route> routes = null;
-        return new StuRailRoadBaronsMap(20,20, routes);
-
+            if (s.getCol()>cols) {
+                cols = s.getCol();
+            }
+        }
+        return new StuRailRoadBaronsMap(rows+1,cols+1,routes);
     }
 
     /**

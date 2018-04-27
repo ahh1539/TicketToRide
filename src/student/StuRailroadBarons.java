@@ -13,166 +13,150 @@ import java.util.HashMap;
  */
 public class StuRailroadBarons implements model.RailroadBarons  {
 
-    private ArrayList<RailroadBaronsObserver> observers;
-    private ArrayList<Player> mod_players;
-    private ArrayList<Route> routes;
-    private RailroadMap my_map;
-    private Deck my_deck;
-    private int turn = 0;
+    private ArrayList<Player> players = new ArrayList<>();
+    private Player currentPlayer;
+    private RailroadMap map;
+
+    private Deck deck;
+    private int playerRot;
+    private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
 
 
-    /**
-     * Adds a Railroad observer
-     * @param observer The Railroad observer
-     */
-    @Override
-    public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
-        mod_players = new ArrayList<>();
-        mod_players.add(new student.StuPlayer(Baron.BLUE));
-        mod_players.add(new student.StuPlayer(Baron.RED));
-        mod_players.add(new student.StuPlayer(Baron.GREEN));
-        mod_players.add(new student.StuPlayer(Baron.YELLOW));
-        observers = new ArrayList<>();
-        observers.add(observer);
-
+    public StuRailroadBarons() {
+        players.add(new StuPlayer(Baron.RED));
+        players.add(new StuPlayer(Baron.GREEN));
+        players.add(new StuPlayer(Baron.YELLOW));
+        players.add(new StuPlayer(Baron.BLUE));
+        deck = new StuDeck();
+        playerRot = 0;
     }
 
-    /**
-     * Removes the observer
-     * @param observer The Railroad observer
-     */
+    @Override
+    public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
+        observers.add(observer);
+    }
+
     @Override
     public void removeRailroadBaronsObserver(RailroadBaronsObserver observer) {
         observers.remove(observer);
-
     }
 
-    /**
-     * Starts a game with a map
-     * @param map The map which the game will be played on
-     */
     @Override
     public void startAGameWith(RailroadMap map) {
-        StuDeck deck = new StuDeck();
-        deck.reset();
-        StuPair pair = new StuPair(deck.drawACard(), deck.drawACard());
-        for (Player player: mod_players) {
-            player.reset();
-            for (int i = 0; i < 4 ;i++ ){
-                player.startTurn(pair);
-            }
+        this.map = map;
+        deck = new StuDeck();
+        playerRot = 0;
+        for (Player p:players) {
+            p.reset(deck.drawACard(),deck.drawACard(),
+                    deck.drawACard(),deck.drawACard());
+        }
+        currentPlayer = players.get(playerRot);
+        currentPlayer.startTurn(new StuPair(deck));
+        for (RailroadBaronsObserver r:observers) {
+            r.turnStarted(this,currentPlayer);
         }
     }
 
-    /**
-     *
-     * @param map The map that will be used to place the game
-     * @param deck A deck of cards that will be sued in the game
-     */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
-        map = my_map;
-        deck.reset();
-        StuPair pair = new StuPair(deck.drawACard(), deck.drawACard());
-        for (Player player: mod_players) {
-            player.reset();
-            for (int i = 0; i < 4 ;i++ ){
-                player.startTurn(pair);
-            }
+        deck = new StuDeck();
+        playerRot = 0;
+        this.map = map;
+        for (Player p:players) {
+            p.reset(deck.drawACard(),deck.drawACard(),
+                    deck.drawACard(),deck.drawACard());
+        }
+        currentPlayer = players.get(playerRot);
+        currentPlayer.startTurn(new StuPair(deck));
+        for (RailroadBaronsObserver r:observers) {
+            r.turnStarted(this,currentPlayer);
         }
     }
 
-    /**
-     * The Railroad map
-     * @return the railroad map
-     */
     @Override
     public RailroadMap getRailroadMap() {
-        return my_map;
+        return map;
     }
 
-    /**
-     *
-     * @return the number of cards in the deck remaining
-     */
     @Override
     public int numberOfCardsRemaining() {
-        return my_deck.numberOfCardsRemaining();
+        return deck.numberOfCardsRemaining();
     }
 
-    /**
-     * Can it be claimed by a person
-     * @param row The row
-     * @param col The column
-     * @return a boolean
-     */
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
-        Route route = my_map.getRoute(row,col);
-        if (getCurrentPlayer().canClaimRoute(route) == true){
-            return true;
-        }
-        return false;
+        return (currentPlayer.canClaimRoute(map.getRoute(row,col)));
     }
 
-    /**
-     * Claims a route
-     * @param row The row
-      * @param col The column
-     * @throws RailroadBaronsException
-     */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        Route route = my_map.getRoute(row, col);
-        if (canCurrentPlayerClaimRoute(row, col) == true){
-            getCurrentPlayer().claimRoute(route);
+        if (canCurrentPlayerClaimRoute(row,col)) {
+            currentPlayer.claimRoute(map.getRoute(row,col));
+            map.routeClaimed(map.getRoute(row,col));
         }
-
     }
 
-    /**
-     * Ends a players turn
-     */
     @Override
     public void endTurn() {
-        turn ++;
-    }
-
-    /**
-     * @return the current player
-     */
-    @Override
-    public Player getCurrentPlayer() {
-        if (turn == 4){
-            turn = 1;
+        for (RailroadBaronsObserver r:observers) {
+            r.turnEnded(this,currentPlayer);
         }
-        return mod_players.get(turn);
-    }
-
-    /**
-     * All of the players
-     * @return a list of players
-     */
-    @Override
-    public Collection<Player> getPlayers() {
-        return mod_players;
-    }
-
-
-    /**
-     * Ends the game
-     * @return boolean
-     */
-    @Override
-    public boolean gameIsOver() {
-        int num_players = 0;
-        for (Player player : mod_players) {
-            if (player.getNumberOfPieces() <= 0 ||
-                    player.canContinuePlaying(my_map.getLengthOfShortestUnclaimedRoute()) == false){
-                num_players++;
+        if (!gameIsOver()) {
+            playerRot += 1;
+            if (playerRot == 4) {
+                playerRot = 0;
+            }
+            currentPlayer = players.get(playerRot);
+            currentPlayer.startTurn(new StuPair(deck));
+            for (RailroadBaronsObserver r : observers) {
+                r.turnStarted(this, currentPlayer);
             }
         }
-        if (num_players == mod_players.size()){
+    }
+
+    @Override
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    @Override
+    public Collection<Player> getPlayers() {
+        return players;
+    }
+
+    @Override
+    public boolean gameIsOver() {
+        boolean gameOver1 = false;
+        boolean gameOver2 = false;
+        if (map.getLengthOfShortestUnclaimedRoute() == 999) {
+            gameOver1 = true;
+            gameOver2 = true;
+        }
+        if (deck.numberOfCardsRemaining() == 0) {
+            gameOver1 = true;
+        }
+        int x = 0;
+        for (Player p : players) {
+            if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute())) {
+                x += 1;
+            }
+        }
+        if (x == 4&&deck.numberOfCardsRemaining()==0) {
+            gameOver1 = true;
+            gameOver2 = true;
+        }
+        if (gameOver1&&gameOver2) {
+            Player winner = null;
+            int highScore = 0;
+            for (Player p : players) {
+                if (p.getScore() >= highScore) {
+                    highScore = p.getScore();
+                    winner = p;
+                }
+            }
+            for (RailroadBaronsObserver r : observers) {
+                r.gameOver(this, winner);
+            }
             return true;
         }
         return false;

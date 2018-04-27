@@ -78,7 +78,7 @@ public class CardView extends StackPane {
      * In some cases a card view may be used to display more than one
      * kind of {@linkplain Card card}, e.g. the views used to display the
      * cards dealt to the {@linkplain model.Player player} at the start of a
-     * turn. This method is used to change the image on an existing card view.
+     * turn. This method is used to diff the image on an existing card view.
      *
      * @param cardImage The new {@link CardImage} that the card view should
      *                  display.

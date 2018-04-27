@@ -1,16 +1,18 @@
 package student;
 
+import model.Station;
+
 import model.Space;
 
 /**
  * @author Brett Farruggia & Alex Hurley
  */
-public class StuStation implements model.Station{
+public class StuStation implements Station{
 
-    private Integer ident;
+    private int ident;
     private String name;
-    private Integer col;
-    private Integer row;
+    private int col;
+    private int row;
 
     /**
      * Creates a staiton
@@ -19,10 +21,11 @@ public class StuStation implements model.Station{
      * @param col station on this column
      * @param name name of the station
      */
-    public StuStation(int ident, int row, int col, String name){
+    public StuStation(String name, int ident, int row, int col){
         this.name=name;
         this.col=col;
         this.row=row;
+        this.ident = ident;
     }
 
     /**
@@ -48,6 +51,9 @@ public class StuStation implements model.Station{
     public int getCol() {
         return col;
     }
+
+
+    public int getId() {return ident; }
 
     /**
     returns whether or not the station occupies the same place in the board as the passed in space type

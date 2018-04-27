@@ -1,352 +1,302 @@
+
+
 package student;
 
 import model.*;
-import model.Pair;
-import model.PlayerObserver;
-import model.Card;
-import model.Baron;
-import model.Route;
-import student.StuDeck;
 
-import java.security.Key;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TreeMap;
 
-/**
- * @author Brett Farruggia & Alex Hurley
- */
-
-public class StuPlayer implements model.Player {
-
-    private model.Baron player;
-    private int pieces;
+public class StuPlayer implements Player {
+    private Baron baron;
+    private ArrayList<Route> claimedRoutes;
+    private TreeMap<Card, Integer> hand;
+    private boolean claimedThisTurn;
+    private int trainPieces;
     private int score;
-    private HashMap<Card,Integer> player_cards;
-    private ArrayList<PlayerObserver> observers;
-    private ArrayList<Route> routes;
-    public boolean canClaim = true;
-    private Pair last;
-
+    private Pair lastPair;
+    private Card lastCard;
+    private Card secondLastCard;
+    private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
     /**
-     * The constructor, takes a player
-     * @param player the player
+     * Constructor for BoardPlayer.
+     * @param baron
      */
-    public StuPlayer(model.Baron player){
-        this.player = player;
-        this.pieces = 45;
-        this.score = 0;
-        routes = new ArrayList<>();
-        player_cards = createHand();
-
-        //back and none
-    }
-
-    public void startgameplayer(){
-        StuDeck deck = new StuDeck();
-        deck.drawACard();
-        deck.drawACard();
-        deck.drawACard();
-        deck.drawACard();
-
+    public StuPlayer(Baron baron) {
+        claimedThisTurn = false;
+        this.baron = baron;
+        claimedRoutes = new ArrayList<>();
+        hand = createHand();
+        trainPieces = 45;
+        score = 0;
+        lastCard = Card.NONE;
+        secondLastCard = Card.NONE;
     }
 
     /**
-     * Create hand
-     * @return a new hand, cards set to 0
+     * @return - Cards in the player's hand.
      */
-    public HashMap<Card, Integer> createHand() {
-        HashMap<Card,Integer> set = new HashMap<>();
+    public TreeMap<Card, Integer> createHand() {
+        TreeMap<Card,Integer> temp = new TreeMap<>();
         ArrayList<Card> cards = new ArrayList<>();
-        cards.add(Card.BLACK);
-        cards.add(Card.BLUE);
-        cards.add(Card.WHITE);
-
-        cards.add(Card.GREEN);
         cards.add(Card.ORANGE);
-        cards.add(Card.PINK);
-
-
         cards.add(Card.RED);
-        cards.add(Card.WILD);
+        cards.add(Card.BLACK);
+        cards.add(Card.WHITE);
+        cards.add(Card.BLUE);
         cards.add(Card.YELLOW);
+        cards.add(Card.GREEN);
+        cards.add(Card.PINK);
+        cards.add(Card.WILD);
         for (Card card: cards) {
-            set.put(card,0);
+            temp.put(card,0);
         }
-        return set;
+        return temp;
     }
 
     /**
-     * The players hand
-     * @param dealt Resets the hand of the player
+     * Resets the player's hand.
+     * @param dealt The hand of {@link Card cards} dealt to the player at the
      */
     @Override
     public void reset(Card... dealt) {
-        player_cards.clear();
-        for (Card card1: dealt) {
-            player_cards.put(card1, 0);
-        }
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-
-        pieces = 45;
+        trainPieces = 45;
         score = 0;
-        for (Card card:dealt) {
-            player_cards.put(card, player_cards.get(card)+1);
+        claimedRoutes.clear();
+        lastCard = Card.NONE;
+        secondLastCard = Card.NONE;
+        for (int cards:hand.values()) {
+            cards = 0;
         }
-        observers.clear();
-        routes.clear();
-
-    }
-    public void setTrainPieces(int n){
-        pieces = n;
-    }
-
-    public HashMap getHand(){
-        return player_cards;
-    }
-
-    public void setHasClaimedRoute(Boolean booollyy){
-        canClaim = booollyy;
-    }
-
-    public Boolean isHasClaimedRoute(){
-        return canClaim;
+        for (int x=0;x<4;x++) {
+            hand.put(dealt[x], hand.get(dealt[x]) + 1);
+        }
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
+        }
     }
 
     /**
-     * Adds observer
-     * @param observer The new PlayerObserver
+     * Adds a player observer.
+     * @param observer The new {@link PlayerObserver}.
      */
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
-        observers = new ArrayList<>();
         observers.add(observer);
     }
 
     /**
-     * Removes observer
-     * @param observer The PlayerObserver
+     * Removes a player observer.
+     * @param observer The {@link PlayerObserver} to remove.
      */
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
-        observers.remove(observer);
+        observers.add(observer);
     }
 
     /**
-     * gets The player
-     * @return the player
+     * @return - a player.
      */
     @Override
     public Baron getBaron() {
-        return player;
+        return baron;
     }
 
     /**
-     *
-     * @param dealt A pair of cards to be dealt
+     * Begins the player's turn.
+     * @param dealt a {@linkplain Pair pair of cards} to the player. Note that
      */
     @Override
     public void startTurn(Pair dealt) {
-        canClaim = true;
-        last = dealt;
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
+        lastPair = dealt;
+        for (Card c:hand.keySet()) {
+            if (c==lastPair.getFirstCard()) {
+                hand.put(c,hand.get(c)+1);
+            }
+            if (c==lastPair.getSecondCard()) {
+                hand.put(c,hand.get(c)+1);
+            }
+        }
+        claimedThisTurn = false;
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
         }
     }
 
     /**
-     *
-     * @return the last tow cards in the players hand
+     * @return - Last pair of cards.
      */
     @Override
     public Pair getLastTwoCards() {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        return last;
+        return lastPair;
     }
 
     /**
-     *
-     * @param card a card
-     * @return number of cards in the hand
+     * @param card The {@link Card} of interest.
+     * @return - Cards in the player's hand.
      */
     @Override
     public int countCardsInHand(Card card) {
-        //need to count the cards
-        int num_cards = 0;
-        for (int num: player_cards.values()) {
-            num_cards = num_cards + num;
-        }
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        return num_cards;
-
-    }
-
-    public Baron getPlayer() {
-        return player;
-    }
-
-    public int getPieces() {
-        return pieces;
-    }
-
-    public HashMap<Card, Integer> getPlayer_cards() {
-        return player_cards;
-    }
-
-    public ArrayList<PlayerObserver> getObservers() {
-        return observers;
-    }
-
-    public ArrayList<Route> getRoutes() {
-        return routes;
-    }
-
-    public boolean isCanClaim() {
-        return canClaim;
-    }
-
-    public Pair getLast() {
-        return last;
+        return hand.get(card);
     }
 
     /**
-     *
-     * @return the number of pieces
+     * @return - the number of train pieces on
+     * the board.
      */
     @Override
     public int getNumberOfPieces() {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        return pieces;
+        return trainPieces;
     }
 
     /**
-     *
-     * @param route the route in question
-     * @return a boolean, true if player cna claim route
+     * Checks to see in a route is claimable.
+     * @param route The {@link Route} being tested to determine whether or not
+     *              the player is able to claim it.
+     * @return - boolean.
      */
     @Override
     public boolean canClaimRoute(Route route) {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        int wild = 0;
-        int max_cards = 0;
-        for (Card carddd: player_cards.keySet()) {
-            if (carddd == Card.WILD){
-                if (player_cards.get(carddd)>=1){
-                    wild =1;
-                }
-                else {
-                    wild = 0;
-                }
-            }
-            if (player_cards.get(carddd) > max_cards && carddd != Card.WILD){
-                max_cards = player_cards.get(carddd);
-            }
-        }
-        if (route.getBaron() == Baron.UNCLAIMED && canClaim == true &&
-                route.getLength() <= max_cards+wild && pieces >= route.getLength()){
+        if (route.getBaron()==Baron.UNCLAIMED&&
+                getNumberOfPieces()>=route.getLength()&&
+                claimedThisTurn==false&&checkCardAmounts(route.getLength())) {
             return true;
         }
         return false;
     }
 
-
     /**
-     * Claims a route
-     * @param route The route being claimed
+     * A player claims a route.
+     * @param route The {@link Route} to claim.
      *
      * @throws RailroadBaronsException
      */
     @Override
     public void claimRoute(Route route) throws RailroadBaronsException {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
+        if (canClaimRoute(route)) {
+            route.claim(baron);
+            playCards(route);
+            claimedRoutes.add(route);
+            score += route.getPointValue();
+            trainPieces -= route.getLength();
+            claimedThisTurn = true;
         }
-        if (canClaimRoute(route) == true) {
-
-            canClaim = false;
-            pieces = pieces - route.getLength();
-            int max_cards = 0;
-            Card color = Card.RED;
-            Card wild = Card.WILD;
-            for (Card carddd : player_cards.keySet()) {
-                if (player_cards.get(carddd) > max_cards && carddd != Card.WILD) {
-                    max_cards = player_cards.get(carddd);
-                    color = carddd;
-                }
-            }
-            if (route.getLength() == player_cards.get(color) + 1 && player_cards.get(wild) >= 1) {
-                player_cards.put(color, player_cards.get(wild) - 1);
-                player_cards.put(color, player_cards.get(color) - (route.getLength() + 1));
-            } else {
-                player_cards.put(color, player_cards.get(color) - route.getLength());
-            }
-            routes.add(route);
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
         }
     }
 
     /**
-     *
-     * @return all of the claimed routes
+     * @return - routes claimed by a player.
      */
     @Override
     public Collection<Route> getClaimedRoutes() {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        return routes;
+        return claimedRoutes;
     }
 
     /**
-     * The score of the game
-     * @return the score
+     * @return - the player's score.
      */
     @Override
     public int getScore() {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
+        /**
+         int total = 0;
+         for (Route r:claimedRoutes) {
+         total += r.getPointValue();
+         }
+         score = total;
+         **/
         return score;
     }
 
     /**
-     *
+     * Checks to see if the game is over using routes.
      * @param shortestUnclaimedRoute The length of the shortest unclaimed
-     *                               route in the current game.
+     *                               {@link Route} in the current game.
      *
-     * @return boolean
+     * @return - boolean
      */
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
-        for (PlayerObserver playa: observers) {
-            playa.playerChanged(this);
-        }
-        int max_cards = 0;
-        int wild = 0;
-        for (Card carddd : player_cards.keySet()) {
-            if (carddd == Card.WILD){
-                if (player_cards.get(carddd)>=1){
-                    wild =1;
-                }
-                else {
-                    wild = 0;
-                }
-            }
-            if (player_cards.get(carddd) > max_cards && carddd != Card.WILD) {
-                max_cards = player_cards.get(carddd);
-            }
-        }
-        if (pieces >= shortestUnclaimedRoute || shortestUnclaimedRoute <= max_cards+wild){
+        if (getNumberOfPieces()>=shortestUnclaimedRoute&&checkCardAmounts(shortestUnclaimedRoute)) {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks to see if game is over using card
+     * amounts.
+     * @param routeLength
+     * @return - boolean.
+     */
+    public boolean checkCardAmounts(int routeLength) {
+        int mostCards = 0;
+        int wildCards = 0;
+        for (Card card: hand.keySet()) {
+            if (card==Card.WILD) {
+                wildCards = hand.get(card);
+            }
+            else {
+                if (hand.get(card)>mostCards) {
+                    mostCards = hand.get(card);
+                }
+            }
+        }
+        if (mostCards >= routeLength) {
+            return true;
+        }
+        if (mostCards == routeLength-1 && wildCards > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Uses the player's cards to claim routes.
+     * @param route
+     */
+    public void playCards(Route route) {
+        boolean played = false;
+        for (Card card : hand.keySet()) {
+            if (card != Card.WILD) {
+                if (hand.get(card) >= route.getLength()) {
+                    hand.put(card, hand.get(card)-route.getLength());
+                    played = true;
+                    break;
+                }
+                /**
+                 else if (hand.get(card) == route.getLength()-1 && hand.get(Card.WILD)>=1) {
+                 hand.put(card,hand.get(card)-(route.getLength()-1));
+                 hand.put(Card.WILD,hand.get(Card.WILD)-1);
+                 break;
+                 }
+                 **/
+            }
+        }
+        if (!played) {
+            for (Card card : hand.keySet()) {
+                if (card != Card.WILD) {
+                    if (hand.get(card) == route.getLength() - 1 && hand.get(Card.WILD) >= 1) {
+                        hand.put(card, hand.get(card) - (route.getLength() - 1));
+                        hand.put(Card.WILD, hand.get(Card.WILD) - 1);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @return - Name of Baron.
+     */
+    public String toString() {
+        if (baron==Baron.RED) {return "RED Baron";}
+        if (baron==Baron.YELLOW) {return "YELLOW Baron";}
+        if (baron==Baron.GREEN) {return "GREEN Baron";}
+        if (baron==Baron.BLUE) {return "BLUE Baron";}
+        return "broke";
     }
 }

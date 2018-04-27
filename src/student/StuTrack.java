@@ -22,7 +22,7 @@ public class StuTrack implements model.Track{
      * @param col the column of the track
      * @param row the row of the track
      */
-    public StuTrack(model.Route route, int col, int row){
+    public StuTrack(int row, int col, StuRoute route){
         this.route = route;
         this.col = col;
         owner = Baron.UNCLAIMED;

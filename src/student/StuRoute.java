@@ -6,6 +6,12 @@ import model.Space;
 import model.Station;
 import model.Track;
 
+
+import model.*;
+
+import static java.lang.Math.abs;
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +21,9 @@ import java.util.List;
  */
 public class StuRoute implements model.Route {
 
-    private ArrayList<Track> tracks = new ArrayList<>();
-    private model.Station start;
-    private model.Station end;
+    private ArrayList<Track> tracks;
+    private StuStation start;
+    private StuStation end;
     private Baron owner;
     private Orientation ori;
 
@@ -29,38 +35,31 @@ public class StuRoute implements model.Route {
      */
     public StuRoute(StuStation start, StuStation end, Baron baron){
 
-
         this.start = start;
         this.end = end;
-        owner = baron;
         if (start.getRow()==end.getRow()) {
             ori=Orientation.HORIZONTAL;
-            for (int i = start.getCol() + 1; i< end.getCol();i++){
-                tracks.add(new StuTrack(this,i, start.getRow()));
-            }
         } else {
             ori=Orientation.VERTICAL;
-            for (int j = start.getRow() +1; j <end.getRow();j++){
-                tracks.add(new StuTrack(this, start.getCol(),j));
-            }
         }
+        tracks = buildTracks();
+        owner = baron;
     }
 
-    //public ArrayList<Track> buildTracks() {
-      //  ArrayList<Track> newTracks = new ArrayList<>();
-        //if (ori==Orientation.VERTICAL) {
-          //  for (int x = start.getRow()+1; x < end.getRow(); x++) {
-            //    newTracks.add(new StuTrack(this, start.getCol(),x));
-            //}
-        //} else {
-          //  /**
-            //for (int x = start.getCol()+1; x < end.getCol(); x++) {
-              //  newTracks.add(new StuTrack(this, x, start.getRow()));
-            //}
-             //**/
-        //}
-        //return newTracks;
-   // }
+
+    public ArrayList<Track> buildTracks() {
+        ArrayList<Track> newTracks = new ArrayList<>();
+        if (ori==Orientation.VERTICAL) {
+            for (int x = start.getRow()+1; x < end.getRow(); x++) {
+                newTracks.add(new StuTrack(x, start.getCol(),this));
+            }
+        } else {
+            for (int x = start.getCol()+1; x < end.getCol(); x++) {
+                newTracks.add(new StuTrack(start.getRow(),x,this));
+            }
+        }
+        return newTracks;
+    }
 
     @Override
     public Baron getBaron() {
@@ -89,32 +88,45 @@ public class StuRoute implements model.Route {
 
     @Override
     public int getLength() {
-        return tracks.size();
-    }
-
-    @Override
-    public int getPointValue() {
         return this.tracks.size();
     }
 
     @Override
-    public boolean includesCoordinate(Space space) {
-        boolean tracker = false;
-        for (Track track: tracks) {
-            if (track.getCol() == space.getCol() && track.getRow() == space.getRow()) {
-                tracker=true;
-            }
+    public int getPointValue() {
+        int size = getLength();
+        if (size==1) {return 1;}
+        else if (size==2) {return 2;}
+        else if (size==3) {return 4;}
+        else if (size==4) {return 7;}
+        else if (size==5) {return 10;}
+        else if (size==6) {return 15;}
+        else {
+            return 5*(size-3);
         }
-        if (start.getCol() == space.getCol() && space.getRow() == space.getRow()){
-            tracker = true;
-        }
-        if (end.getCol() == space.getCol() && end.getRow() == space.getRow()){
-            tracker = true;
-        }
-        return tracker;
     }
 
     @Override
+    public boolean includesCoordinate(Space space) {
+        if (ori == Orientation.VERTICAL) {
+            if (space.getCol() == start.getCol()) {
+                if ((space.getRow() > start.getRow() && space.getRow() < end.getRow()) ||
+                        (space.getRow() < start.getRow() && space.getRow() > end.getRow())) {
+                    return true;
+                }
+            }
+        } else {
+            if (space.getRow() == start.getRow()) {
+                if ((space.getCol() > start.getCol() && space.getCol() < end.getCol()) ||
+                        (space.getCol() < start.getCol() && space.getCol() > end.getCol())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+
     public boolean claim(Baron claimant) {
         if (owner == Baron.UNCLAIMED) {
             owner = claimant;

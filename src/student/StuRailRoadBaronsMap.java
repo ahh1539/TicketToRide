@@ -35,14 +35,12 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
         public void createSpaces(){
             for (Route route: routes) {
-                spaces[route.getOrigin().getRow()][route.getOrigin().getCol()]
-                        = route.getOrigin();
+                spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
 
-                spaces[route.getDestination().getRow()][route.getDestination().getCol()]
-                        = route.getDestination();
+                spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
 
-                for (Track tr: route.getTracks()) {
-                    spaces[tr.getRow()][tr.getCol()] = tr;
+                for (Track track: route.getTracks()) {
+                    spaces[track.getRow()][track.getCol()] = track;
                 }
             }
         }
@@ -63,14 +61,14 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public int getRows() {
-        //assumes at least one row
+
         return Rows;
     }
 
 
     @Override
     public int getCols() {
-        //assumes at least one col
+
         return Cols;
 
     }
@@ -78,7 +76,7 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public Space getSpace(int row, int col) {
-        //assumes that space is a valid one
+
         return spaces[row][col];
     }
 
@@ -105,15 +103,15 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        int n = 100000;
-        for(Route r: routes) {
-            if(r.getBaron() == Baron.UNCLAIMED) {
-                if(r.getLength() < n) {
-                    n = r.getLength();
+        int var = 10000;
+        for(Route route: routes) {
+            if(route.getBaron() == Baron.UNCLAIMED) {
+                if(route.getLength() < var) {
+                    var = route.getLength();
                 }
             }
         }
-        return n;
+        return var;
     }
 
     @Override

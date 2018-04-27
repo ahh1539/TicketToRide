@@ -21,6 +21,10 @@ public class StuPlayer implements Player {
     private int scoreTotal;
     private Pair lastPair;
 
+    private boolean northSouthMultiplier;
+    private boolean eastWestMultiplier;
+
+
 
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
@@ -37,6 +41,11 @@ public class StuPlayer implements Player {
         scoreTotal = 0;
         lastCard = Card.NONE;
         secondLastCard = Card.NONE;
+
+        northSouthMultiplier = false;
+        eastWestMultiplier = false;
+
+
     }
 
     /**
@@ -209,6 +218,8 @@ public class StuPlayer implements Player {
         return scoreTotal;
     }
 
+
+
     /**
      * Checks to see if the game is over using routes.
      * @param shortestUnclaimedRoute
@@ -289,5 +300,13 @@ public class StuPlayer implements Player {
         if (baron==Baron.GREEN) {return "GREEN Baron";}
         if (baron==Baron.BLUE) {return "BLUE Baron";}
         return ("Failed");
+    }
+
+
+    public Boolean[] getMultiplier(){
+        Boolean multi[] = new Boolean[2];
+        multi[0] = northSouthMultiplier;
+        multi[1] = eastWestMultiplier;
+        return multi;
     }
 }

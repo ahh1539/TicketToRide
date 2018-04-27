@@ -83,9 +83,9 @@ public class StuRailRoadBaronsMap implements RailroadMap{
 
     @Override
     public Route getRoute(int row, int col) {
-        for(Route r: routes) {
-            if(r.includesCoordinate(getSpace(row, col))) {
-                return r;
+        for(Route route: routes) {
+            if(route.includesCoordinate(getSpace(row, col))) {
+                return route;
             }
         }
         return null;

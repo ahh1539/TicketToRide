@@ -29,9 +29,9 @@ public class StuRoute implements model.Route {
 
     /**
      * The constructor that creates the route
-     * @param start starting point of a route (a station)
-     * @param end ending point of a route (a station)
-     * @param baron a baron who can claim the route
+     * @param start
+     * @param end
+     * @param baron
      */
     public StuRoute(StuStation start, StuStation end, Baron baron){
 

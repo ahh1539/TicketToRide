@@ -58,7 +58,7 @@ public class StuPlayer implements Player {
 
     /**
      * Resets the player's hand.
-     * @param dealt The hand of {@link Card cards} dealt to the player at the
+     * @param dealt
      */
     @Override
     public void reset(Card... dealt) {
@@ -89,7 +89,7 @@ public class StuPlayer implements Player {
 
     /**
      * Removes a player observer.
-     * @param observer The {@link PlayerObserver} to remove.
+     * @param observer
      */
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
@@ -106,7 +106,7 @@ public class StuPlayer implements Player {
 
     /**
      * Begins the player's turn.
-     * @param dealt a {@linkplain Pair pair of cards} to the player. Note that
+     * @param dealt
      */
     @Override
     public void startTurn(Pair dealt) {
@@ -152,9 +152,8 @@ public class StuPlayer implements Player {
     }
 
     /**
-     * Checks to see in a route is claimable.
-     * @param route The {@link Route} being tested to determine whether or not
-     *              the player is able to claim it.
+     * Check
+     * @param route
      * @return - boolean.
      */
     @Override
@@ -201,20 +200,12 @@ public class StuPlayer implements Player {
      */
     @Override
     public int getScore() {
-        /**
-         int total = 0;
-         for (Route r:claimedRoutes) {
-         total += r.getPointValue();
-         }
-         score = total;
-         **/
         return score;
     }
 
     /**
      * Checks to see if the game is over using routes.
-     * @param shortestUnclaimedRoute The length of the shortest unclaimed
-     *                               {@link Route} in the current game.
+     * @param shortestUnclaimedRoute
      *
      * @return - boolean
      */
@@ -267,13 +258,6 @@ public class StuPlayer implements Player {
                     played = true;
                     break;
                 }
-                /**
-                 else if (hand.get(card) == route.getLength()-1 && hand.get(Card.WILD)>=1) {
-                 hand.put(card,hand.get(card)-(route.getLength()-1));
-                 hand.put(Card.WILD,hand.get(Card.WILD)-1);
-                 break;
-                 }
-                 **/
             }
         }
         if (!played) {

@@ -164,4 +164,40 @@ constructor which initializes values for rows cols and routes, also makes the ga
     public ArrayList<RailroadMapObserver> getObservers() {
         return observers;
     }
+
+    public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, StuPlayer owner){
+        for (Station neigh: getNeighbors(curr)) {
+
+            if (!wasVisited.contains(neigh)) {
+
+                for (Route route:routes) {
+
+                    if (route.getOrigin()==neigh||route.getDestination()==neigh && route.getBaron()==owner.getBaron()) {
+                        wasVisited.add(neigh);
+                        DFSCrossCountry(neigh, wasVisited, owner);
+                    }
+                }
+            }
+        }
+    }
+
+    public ArrayList<Station> getNeighbors(Station station) {
+        ArrayList<Station> neighbor = new ArrayList<>();
+
+        for (Route route: routes) {
+
+            if (route.getOrigin()==station) {
+                if (!neighbor.contains(route.getDestination())) {
+                    neighbor.add(route.getDestination());
+                }
+            }
+
+            if (route.getDestination()==station) {
+                if (!neighbor.contains(route.getOrigin())) {
+                    neighbor.add(route.getOrigin());
+                }
+            }
+        }
+        return neighbor;
+    }
 }

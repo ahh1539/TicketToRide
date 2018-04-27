@@ -200,4 +200,16 @@ constructor which initializes values for rows cols and routes, also makes the ga
         }
         return neighbor;
     }
+
+    public boolean crossCountry(StuStation start, StuStation finish, StuPlayer play) {
+        Boolean[] multi = play.getMultiplier();
+        ArrayList<Station> visited = new ArrayList<>();
+
+        visited.add(start);
+        DFSCrossCountry(start, visited, play);
+        if (visited.contains(finish)) {
+            return true;
+        }
+        return false;
+    }
 }

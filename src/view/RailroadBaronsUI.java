@@ -95,7 +95,6 @@ public class RailroadBaronsUI extends Application
             System.err.println(rbe.getMessage());
             System.exit(1);
         }
-
         this.primaryStage = primaryStage;
 
         primaryStage.setTitle(TITLE);

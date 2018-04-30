@@ -11,7 +11,7 @@ import java.util.HashMap;
  * The game logic for railroad barons
  * @author Brett Farruggia & Alex Hurley
  */
-public class StuRailroadBarons implements model.RailroadBarons  {
+public class StuRailroadBarons implements model.RailroadBarons {
 
     private ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
@@ -66,16 +66,16 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         deck = new StuDeck();
         playerValue = 0;
 
-        for (Player p:players) {
-            p.reset(deck.drawACard(),deck.drawACard(),
-                    deck.drawACard(),deck.drawACard());
+        for (Player p : players) {
+            p.reset(deck.drawACard(), deck.drawACard(),
+                    deck.drawACard(), deck.drawACard());
         }
 
         currentPlayer = players.get(playerValue);
         currentPlayer.startTurn(new StuPair(deck));
 
-        for (RailroadBaronsObserver obs:observers) {
-            obs.turnStarted(this,currentPlayer);
+        for (RailroadBaronsObserver obs : observers) {
+            obs.turnStarted(this, currentPlayer);
         }
     }
 
@@ -88,16 +88,16 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         NewDeck = new StuDeck();
         playerValue = 0;
         this.map = map;
-        for (Player p:players) {
+        for (Player p : players) {
 
-            p.reset(NewDeck.drawACard(),NewDeck.drawACard(),
-                    NewDeck.drawACard(),NewDeck.drawACard());
+            p.reset(NewDeck.drawACard(), NewDeck.drawACard(),
+                    NewDeck.drawACard(), NewDeck.drawACard());
         }
         currentPlayer = players.get(playerValue);
         currentPlayer.startTurn(new StuPair(deck));
 
-        for (RailroadBaronsObserver obs:observers) {
-            obs.turnStarted(this,currentPlayer);
+        for (RailroadBaronsObserver obs : observers) {
+            obs.turnStarted(this, currentPlayer);
         }
     }
 
@@ -122,7 +122,7 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
-        return (currentPlayer.canClaimRoute(map.getRoute(row,col)));
+        return (currentPlayer.canClaimRoute(map.getRoute(row, col)));
     }
 
     /*
@@ -130,9 +130,9 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        if (canCurrentPlayerClaimRoute(row,col)) {
-            currentPlayer.claimRoute(map.getRoute(row,col));
-            map.routeClaimed(map.getRoute(row,col));
+        if (canCurrentPlayerClaimRoute(row, col)) {
+            currentPlayer.claimRoute(map.getRoute(row, col));
+            map.routeClaimed(map.getRoute(row, col));
         }
     }
 
@@ -141,8 +141,8 @@ public class StuRailroadBarons implements model.RailroadBarons  {
      */
     @Override
     public void endTurn() {
-        for (RailroadBaronsObserver obs:observers) {
-            obs.turnEnded(this,currentPlayer);
+        for (RailroadBaronsObserver obs : observers) {
+            obs.turnEnded(this, currentPlayer);
         }
         if (!gameIsOver()) {
             playerValue += 1;
@@ -193,11 +193,11 @@ public class StuRailroadBarons implements model.RailroadBarons  {
                 x += 1;
             }
         }
-        if (x == 4&&deck.numberOfCardsRemaining()==0) {
+        if (x == 4 && deck.numberOfCardsRemaining() == 0) {
             gameOver1 = true;
             gameOver2 = true;
         }
-        if (gameOver1&&gameOver2) {
+        if (gameOver1 && gameOver2) {
             Player winner = null;
             int highScore = 0;
             for (Player p : players) {
@@ -217,28 +217,28 @@ public class StuRailroadBarons implements model.RailroadBarons  {
     public ArrayList<Station> getVerticalStations() {
         ArrayList<Station> mapBorderStations = new ArrayList<>();
 
-        for (Route route :  map.getRoutes()) {
-            if (route.getOrigin().getRow()== mapBound[2]) {
+        for (Route route : map.getRoutes()) {
+            if (route.getOrigin().getRow() == mapBound[2]) {
 
                 if (!mapBorderStations.contains(route.getOrigin())) {
                     mapBorderStations.add(route.getOrigin());
                 }
             }
 
-            if (route.getDestination().getRow()== mapBound[2]) {
+            if (route.getDestination().getRow() == mapBound[2]) {
 
                 if (!mapBorderStations.contains(route.getDestination())) {
                     mapBorderStations.add(route.getDestination());
                 }
             }
-            if (route.getDestination().getRow()== map.getRows()-1) {
+            if (route.getDestination().getRow() == map.getRows() - 1) {
 
                 if (!mapBorderStations.contains(route.getDestination())) {
                     mapBorderStations.add(route.getDestination());
                 }
             }
 
-            if (route.getOrigin().getRow()== map.getRows()-1) {
+            if (route.getOrigin().getRow() == map.getRows() - 1) {
 
                 if (!mapBorderStations.contains(route.getOrigin())) {
                     mapBorderStations.add(route.getOrigin());
@@ -247,4 +247,39 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         }
         return mapBorderStations;
     }
+
+    public ArrayList<Station> getHorizontalStations() {
+        ArrayList<Station> mapBorderStations = new ArrayList<>();
+
+        for (Route route : map.getRoutes()) {
+            if (route.getOrigin().getCol() == mapBound[2]) {
+
+                if (!mapBorderStations.contains(route.getOrigin())) {
+                    mapBorderStations.add(route.getOrigin());
+                }
+            }
+
+            if (route.getDestination().getCol() == mapBound[2]) {
+
+                if (!mapBorderStations.contains(route.getDestination())) {
+                    mapBorderStations.add(route.getDestination());
+                }
+            }
+            if (route.getDestination().getCol() == map.getCols() - 1) {
+
+                if (!mapBorderStations.contains(route.getDestination())) {
+                    mapBorderStations.add(route.getDestination());
+                }
+            }
+
+            if (route.getOrigin().getCol() == map.getCols() - 1) {
+
+                if (!mapBorderStations.contains(route.getOrigin())) {
+                    mapBorderStations.add(route.getOrigin());
+                }
+            }
+        }
+        return mapBorderStations;
+    }
+
 }

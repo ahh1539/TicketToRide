@@ -119,6 +119,12 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
                 map.routeClaimed(map.getRoute(row, col));
             }
         }
+        else{
+            if (canCurrentPlayerClaimRoute(row, col)) {
+                currentPlayer.claimRoute(map.getRoute(row, col));
+                map.routeClaimed(map.getRoute(row, col));
+            }
+        }
 
     }
 

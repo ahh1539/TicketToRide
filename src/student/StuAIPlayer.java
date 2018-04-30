@@ -28,7 +28,7 @@ public class StuAIPlayer implements model.Player {
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
     /**
-     * Constructor for BoardPlayer.
+     * Constructor for AI Player.
      * @param baron
      */
     public StuAIPlayer(Baron baron, LonelyRailroadBarons lonely) {
@@ -68,6 +68,9 @@ public class StuAIPlayer implements model.Player {
         return temp;
     }
 
+    /*
+    constructor for the AI player
+     */
     public StuAIPlayer(Baron baron) {
         claimedThisTurn = false;
         this.baron = baron;
@@ -84,6 +87,9 @@ public class StuAIPlayer implements model.Player {
 
     }
 
+    /*
+    this is basically the AI for lonely that choses the first available route
+     */
     public void playAI() throws RailroadBaronsException {
         for (Route route: lonely.getRailroadMap().getRoutes()) {
             if (this.canClaimRoute(route)) {

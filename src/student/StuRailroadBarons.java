@@ -31,10 +31,10 @@ public class StuRailroadBarons implements model.RailroadBarons {
     rotation to the beginning of the cycle
      */
     public StuRailroadBarons() {
+        players.add(new StuPlayer(Baron.BLUE));
         players.add(new StuPlayer(Baron.RED));
         players.add(new StuPlayer(Baron.GREEN));
         players.add(new StuPlayer(Baron.YELLOW));
-        players.add(new StuPlayer(Baron.BLUE));
         deck = new StuDeck();
         playerValue = 0;
     }

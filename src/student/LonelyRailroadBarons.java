@@ -33,6 +33,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         players.add(new StuAIPlayer(Baron.RED, this));
         players.add(new StuAIPlayer(Baron.GREEN, this));
         players.add(new StuAIPlayer(Baron.YELLOW, this));
+
         deck = new StuDeck();
         playerRot = 0;
     }
@@ -68,10 +69,26 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
                     deck.drawACard(),deck.drawACard());
         }
         currentPlayer = players.get(playerRot);
-        currentPlayer.startTurn(new StuPair(deck));
+
+        if (currentPlayer instanceof StuAIPlayer) {
+            try {
+                ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
+            }
+            catch (RailroadBaronsException x) {System.out.println(x.getMessage()); }
+
+        }
+        else {
+            currentPlayer.startTurn(new StuPair(deck));
+        }
+
+
         for (RailroadBaronsObserver r:observers) {
             r.turnStarted(this,currentPlayer);
         }
+
+        mapBound = getMapBound();
+        verticalStations = getVerticalStations();
+        horizontalStations = getHorizontalStations();
     }
 
     /*
@@ -92,6 +109,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         for (RailroadBaronsObserver r:observers) {
             r.turnStarted(this,currentPlayer);
         }
+
+        mapBound = getMapBound();
+        verticalStations = getVerticalStations();
+        horizontalStations = getHorizontalStations();
     }
 
     /*
@@ -147,7 +168,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     @Override
     public void endTurn() {
         for (RailroadBaronsObserver obs:observers) {
-            obs.turnEnded(this,currentPlayer);
+            obs.turnEnded(this, currentPlayer);
         }
         if (!gameIsOver()) {
             playerRot += 1;
@@ -158,6 +179,16 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
             currentPlayer.startTurn(new StuPair(deck));
             for (RailroadBaronsObserver obz : observers) {
                 obz.turnStarted(this, currentPlayer);
+            }
+
+            if (currentPlayer instanceof StuAIPlayer) {
+                try {
+                    Route r = ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
+                    if (r!=null) {
+                        map.routeClaimed(r);
+                    }
+                } catch (RailroadBaronsException e) {}
+                endTurn();
             }
         }
     }
@@ -198,7 +229,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
                 x += 1;
             }
         }
-        if (x == 4&&deck.numberOfCardsRemaining()==0) {
+        if (x == 4) {
             gameOver1 = true;
             gameOver2 = true;
         }
@@ -206,10 +237,44 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
             Player winner = null;
             int highScore = 0;
             for (Player p : players) {
-                if (p.getScore() >= highScore) {
-                    highScore = p.getScore();
+                boolean vertBonus = false;
+                boolean horiBonus = false;
+                for (Route r: p.getClaimedRoutes()) {
+                    if (r.getOrigin().getRow()==mapBound[2]) {
+                        if (vertBonus==false) {
+                            if (crossCountryRoute(r.getOrigin(), verticalStations, p)) {
+                                vertBonus = true;
+                            }
+                        }
+                    }
+                    if (r.getOrigin().getCol()==mapBound[0]) {
+                        if (horiBonus==false) {
+                            if (crossCountryRoute(r.getOrigin(), horizontalStations, p)) {
+                                horiBonus = true;
+                            }
+                        }
+                    }
+                }
+                int playerScore = p.getScore();
+                if (vertBonus) {
+                    playerScore += ((mapBound[3]-mapBound[2])+1) * 5;
+                }
+                if (horiBonus) {
+                    playerScore += ((mapBound[1]-mapBound[0])+1) * 5;
+                }
+                if (playerScore >= highScore) {
+                    highScore = playerScore;
                     winner = p;
                 }
+                p.startTurn(new StuPair(deck));
+
+                if (p instanceof StuAIPlayer) {
+                    ((StuAIPlayer) p).updateScoreGUI(playerScore);
+                }
+                else {
+                    ((StuPlayer) p).updateScoreGUI(playerScore);
+                }
+
             }
             for (RailroadBaronsObserver r : observers) {
                 r.gameOver(this, winner);

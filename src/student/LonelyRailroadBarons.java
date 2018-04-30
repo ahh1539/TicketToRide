@@ -5,6 +5,11 @@ import model.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * The game logic for lonely version of railroad barons
+ * @author Brett Farruggia & Alex Hurley
+ */
+
 public class LonelyRailroadBarons implements model.RailroadBarons{
     private ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;

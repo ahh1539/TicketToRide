@@ -2,10 +2,15 @@ package student;
 
 import model.*;
 
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
+/**
+ * ai player for lonely version
+ * @author Brett Farruggia & Alex Hurley
+ */
 public class StuAIPlayer implements model.Player {
     private Card lastCard;
     private Card secondLastCard;

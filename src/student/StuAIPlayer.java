@@ -275,6 +275,14 @@ public class StuAIPlayer implements model.Player {
     }
 
 
+    public void updateScoreGUI(int newScore) {
+        scoreTotal = newScore;
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
+        }
+    }
+
+
 
     /**
      * Checks to see if the game is over using routes.
@@ -365,5 +373,9 @@ public class StuAIPlayer implements model.Player {
         multi[1] = eastWestMultiplier;
         return multi;
     }
+
+
+
+
 }
 

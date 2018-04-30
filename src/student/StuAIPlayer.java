@@ -365,5 +365,11 @@ public class StuAIPlayer implements model.Player {
         multi[1] = eastWestMultiplier;
         return multi;
     }
+
+
+    //test
+    public int getTrains(){
+        return 0;
+    }
 }
 

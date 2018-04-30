@@ -19,6 +19,7 @@ import java.util.List;
 
 /**
  * The main entry point for the Railroad Barons UI.
+ * author @alex hurley, brett
  */
 public class RailroadBaronsUI extends Application
         implements RailroadBaronsView {

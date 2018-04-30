@@ -282,4 +282,101 @@ public class StuRailroadBarons implements model.RailroadBarons {
         return mapBorderStations;
     }
 
+    public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, StuPlayer owner){
+        for (Station neigh: getNeighbors(curr)) {
+
+            if (!wasVisited.contains(neigh)) {
+
+                for (Route route:map.getRoutes()) {
+
+                    if (route.getOrigin()==neigh&&route.getDestination()==curr
+                            && route.getBaron()==owner.getBaron()) {
+
+                        wasVisited.add(neigh);
+                        DFSCrossCountry(neigh, wasVisited, owner);
+                    }
+
+                    if (route.getOrigin()==curr&&route.getDestination()==neigh
+                            && route.getBaron()==owner.getBaron()) {
+
+                        wasVisited.add(neigh);
+                        DFSCrossCountry(neigh, wasVisited, owner);
+                    }
+                }
+            }
+        }
+    }
+
+    public ArrayList<Station> getNeighbors(Station station) {
+        ArrayList<Station> neighbor = new ArrayList<>();
+
+        for (Route route: map.getRoutes()) {
+
+            if (route.getOrigin()==station) {
+                if (!neighbor.contains(route.getDestination())) {
+                    neighbor.add(route.getDestination());
+                }
+            }
+
+            if (route.getDestination()==station) {
+                if (!neighbor.contains(route.getOrigin())) {
+                    neighbor.add(route.getOrigin());
+                }
+            }
+        }
+        return neighbor;
+    }
+
+
+    public Integer[] getMapBound() {
+        Integer[] mpBound = new Integer[4];
+
+        int left = 500;  //top left
+        int right = 0;
+
+        int top = 500;  //top left
+        int bottom = 0;
+
+        for (Route r:map.getRoutes()) {
+            if (r.getOrigin().getRow()<top) {
+                top=r.getOrigin().getRow();
+            }
+
+            if (r.getOrigin().getRow() >bottom){
+                bottom=r.getOrigin().getRow();
+            }
+
+            if (r.getOrigin().getCol() >right){
+                right=r.getOrigin().getCol();
+            }
+
+            if (r.getDestination().getRow() >bottom){
+                bottom=r.getDestination().getRow();
+            }
+
+            if (r.getDestination().getCol() >right){
+                right=r.getDestination().getCol();
+            }
+
+            if (r.getDestination().getCol() <left){
+                left=r.getDestination().getCol();
+            }
+
+            if (r.getOrigin().getCol() <left){
+                left=r.getOrigin().getCol();
+            }
+
+            if (r.getDestination().getRow() <top){
+                top=r.getDestination().getRow();
+            }
+        }
+
+        mpBound[0]=left;
+        mpBound[1]=right;
+        mpBound[2]=top;
+        mpBound[3]=bottom;
+
+        return mpBound;
+    }
+
 }

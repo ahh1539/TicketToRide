@@ -77,6 +77,10 @@ public class StuRailroadBarons implements model.RailroadBarons {
         for (RailroadBaronsObserver obs : observers) {
             obs.turnStarted(this, currentPlayer);
         }
+
+        mapBound = getMapBound();
+        verticalStations = getVerticalStations();
+        horizontalStations = getHorizontalStations();
     }
 
     /*
@@ -99,6 +103,11 @@ public class StuRailroadBarons implements model.RailroadBarons {
         for (RailroadBaronsObserver obs : observers) {
             obs.turnStarted(this, currentPlayer);
         }
+
+        mapBound = getMapBound();
+        verticalStations = getVerticalStations();
+        horizontalStations = getHorizontalStations();
+
     }
 
     /*

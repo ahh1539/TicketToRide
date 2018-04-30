@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
+/**
+ * creates an instance of player in the game
+ * 
+ * @author Brett Farruggia & Alex Hurley
+ */
 public class StuPlayer implements Player {
     private Card lastCard;
     private Card secondLastCard;

@@ -35,7 +35,9 @@ public class StuRailRoadBaronsMap implements RailroadMap {
         createSpaces();
     }
 
-
+/*
+creates gameboard spaces
+ */
     public void createSpaces() {
         for (Route route : routes) {
             spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();

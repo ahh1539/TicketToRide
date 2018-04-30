@@ -21,7 +21,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
 
     /*
     constructor of game that adds players to board and sets the player
-    rotation to the beginning of the cycle
+    rotation to the beginning of the cycles
      */
     public LonelyRailroadBarons() {
         players.add(new StuPlayer(Baron.BLUE));

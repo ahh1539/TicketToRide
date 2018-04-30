@@ -24,10 +24,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     rotation to the beginning of the cycle
      */
     public LonelyRailroadBarons() {
+        players.add(new StuPlayer(Baron.BLUE));
         players.add(new StuAIPlayer(Baron.RED, this));
         players.add(new StuAIPlayer(Baron.GREEN, this));
         players.add(new StuAIPlayer(Baron.YELLOW, this));
-        players.add(new StuPlayer(Baron.BLUE));
         deck = new StuDeck();
         playerRot = 0;
     }

@@ -68,7 +68,19 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
                     deck.drawACard(),deck.drawACard());
         }
         currentPlayer = players.get(playerRot);
-        currentPlayer.startTurn(new StuPair(deck));
+
+        if (currentPlayer instanceof StuAIPlayer) {
+            try {
+                ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
+            }
+            catch (RailroadBaronsException x) {System.out.println(x.getMessage()); }
+
+        }
+        else {
+            currentPlayer.startTurn(new StuPair(deck));
+        }
+
+
         for (RailroadBaronsObserver r:observers) {
             r.turnStarted(this,currentPlayer);
         }
@@ -166,6 +178,16 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
             currentPlayer.startTurn(new StuPair(deck));
             for (RailroadBaronsObserver obz : observers) {
                 obz.turnStarted(this, currentPlayer);
+            }
+
+            if (currentPlayer instanceof StuAIPlayer) {
+                try {
+                    Route r = ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
+                    if (r!=null) {
+                        map.routeClaimed(r);
+                    }
+                } catch (RailroadBaronsException e) {}
+                endTurn();
             }
         }
     }

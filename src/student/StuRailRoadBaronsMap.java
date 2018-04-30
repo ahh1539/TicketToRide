@@ -13,7 +13,7 @@ import java.util.Collection;
 /*
 creates game board
  */
-public class StuRailRoadBaronsMap implements RailroadMap{
+public class StuRailRoadBaronsMap implements RailroadMap {
 
     private int Rows;
     private int Cols;
@@ -22,10 +22,9 @@ public class StuRailRoadBaronsMap implements RailroadMap{
     private ArrayList<RailroadMapObserver> observers;
 
 
-
-/*
-constructor which initializes values for rows cols and routes, also makes the game board
- */
+    /*
+    constructor which initializes values for rows cols and routes, also makes the game board
+     */
     public StuRailRoadBaronsMap(int rows, int cols, ArrayList<Route> routes) {
 
         spaces = new Space[rows][cols];
@@ -37,18 +36,17 @@ constructor which initializes values for rows cols and routes, also makes the ga
     }
 
 
+    public void createSpaces() {
+        for (Route route : routes) {
+            spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
 
-        public void createSpaces(){
-            for (Route route: routes) {
-                spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
+            spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
 
-                spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
-
-                for (Track track: route.getTracks()) {
-                    spaces[track.getRow()][track.getCol()] = track;
-                }
+            for (Track track : route.getTracks()) {
+                spaces[track.getRow()][track.getCol()] = track;
             }
         }
+    }
 
     /**
      * Adds the specified {@linkplain RailroadMapObserver observer} to the
@@ -112,8 +110,8 @@ constructor which initializes values for rows cols and routes, also makes the ga
      */
     @Override
     public Route getRoute(int row, int col) {
-        for(Route route: routes) {
-            if(route.includesCoordinate(getSpace(row, col))) {
+        for (Route route : routes) {
+            if (route.includesCoordinate(getSpace(row, col))) {
                 return route;
             }
         }
@@ -129,8 +127,8 @@ constructor which initializes values for rows cols and routes, also makes the ga
      */
     @Override
     public void routeClaimed(Route route) {
-        for (RailroadMapObserver obs:observers) {
-            obs.routeClaimed(this,route);
+        for (RailroadMapObserver obs : observers) {
+            obs.routeClaimed(this, route);
         }
     }
 
@@ -139,10 +137,10 @@ constructor which initializes values for rows cols and routes, also makes the ga
      */
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        int length = 10000;
-        for(Route route: routes) {
-            if(route.getBaron() == Baron.UNCLAIMED) {
-                if(route.getLength() < length) {
+        int length = 99999;
+        for (Route route : routes) {
+            if (route.getBaron() == Baron.UNCLAIMED) {
+                if (route.getLength() < length) {
                     length = route.getLength();
                 }
             }
@@ -164,7 +162,10 @@ constructor which initializes values for rows cols and routes, also makes the ga
     public ArrayList<RailroadMapObserver> getObservers() {
         return observers;
     }
+}
 
+
+    /**
     public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, StuPlayer owner){
         for (Station neigh: getNeighbors(curr)) {
 
@@ -212,4 +213,5 @@ constructor which initializes values for rows cols and routes, also makes the ga
         }
         return false;
     }
-}
+
+     */

@@ -11,12 +11,17 @@ import java.util.Collection;
  */
 
 public class LonelyRailroadBarons implements model.RailroadBarons{
+    private Integer[] bounded;
+    private ArrayList<Station> horizontalStations;
+    private ArrayList<Station> verticalStations;
+
+
     private ArrayList<Player> players = new ArrayList<>();
     private Player currentPlayer;
     private RailroadMap map;
 
     private Deck deck;
-    private int playerRot;
+    private int playerValue;
     private ArrayList<RailroadBaronsObserver> observers = new ArrayList<>();
 
     /*
@@ -27,9 +32,9 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         players.add(new StuAIPlayer(Baron.RED, this));
         players.add(new StuAIPlayer(Baron.GREEN, this));
         players.add(new StuAIPlayer(Baron.YELLOW, this));
-        players.add(new StuPlayer(Baron.BLUE));
+        players.add(new StuAIPlayer(Baron.BLUE));
         deck = new StuDeck();
-        playerRot = 0;
+        playerValue = 0;
     }
 
     /*
@@ -57,12 +62,12 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     public void startAGameWith(RailroadMap map) {
         this.map = map;
         deck = new StuDeck();
-        playerRot = 0;
+        playerValue = 0;
         for (Player p:players) {
             p.reset(deck.drawACard(),deck.drawACard(),
                     deck.drawACard(),deck.drawACard());
         }
-        currentPlayer = players.get(playerRot);
+        currentPlayer = players.get(playerValue);
         currentPlayer.startTurn(new StuPair(deck));
         for (RailroadBaronsObserver r:observers) {
             r.turnStarted(this,currentPlayer);
@@ -76,13 +81,13 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
         deck = new StuDeck();
-        playerRot = 0;
+        playerValue = 0;
         this.map = map;
         for (Player p:players) {
             p.reset(deck.drawACard(),deck.drawACard(),
                     deck.drawACard(),deck.drawACard());
         }
-        currentPlayer = players.get(playerRot);
+        currentPlayer = players.get(playerValue);
         currentPlayer.startTurn(new StuPair(deck));
         for (RailroadBaronsObserver r:observers) {
             r.turnStarted(this,currentPlayer);
@@ -145,11 +150,11 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
             obs.turnEnded(this,currentPlayer);
         }
         if (!gameIsOver()) {
-            playerRot += 1;
-            if (playerRot == 4) {
-                playerRot = 0;
+            playerValue += 1;
+            if (playerValue == 4) {
+                playerValue = 0;
             }
-            currentPlayer = players.get(playerRot);
+            currentPlayer = players.get(playerValue);
             currentPlayer.startTurn(new StuPair(deck));
             for (RailroadBaronsObserver obz : observers) {
                 obz.turnStarted(this, currentPlayer);

@@ -24,6 +24,7 @@ public class StuRoute implements model.Route {
     private ArrayList<Track> tracks;
     private StuStation start;
     private StuStation end;
+
     private Baron owner;
     private Orientation ori;
 
@@ -37,29 +38,18 @@ public class StuRoute implements model.Route {
 
         this.start = start;
         this.end = end;
+
         if (start.getRow()==end.getRow()) {
             ori=Orientation.HORIZONTAL;
         } else {
             ori=Orientation.VERTICAL;
         }
-        tracks = buildTracks();
+        tracks = makeTracks();
         owner = baron;
     }
 
 
-    public ArrayList<Track> buildTracks() {
-        ArrayList<Track> newTracks = new ArrayList<>();
-        if (ori==Orientation.VERTICAL) {
-            for (int x = start.getRow()+1; x < end.getRow(); x++) {
-                newTracks.add(new StuTrack(x, start.getCol(),this));
-            }
-        } else {
-            for (int x = start.getCol()+1; x < end.getCol(); x++) {
-                newTracks.add(new StuTrack(start.getRow(),x,this));
-            }
-        }
-        return newTracks;
-    }
+
 
     @Override
     public Baron getBaron() {
@@ -106,18 +96,20 @@ public class StuRoute implements model.Route {
     }
 
     @Override
-    public boolean includesCoordinate(Space space) {
+    public boolean includesCoordinate(Space spaceOnBoard) {
         if (ori == Orientation.VERTICAL) {
-            if (space.getCol() == start.getCol()) {
-                if ((space.getRow() > start.getRow() && space.getRow() < end.getRow()) ||
-                        (space.getRow() < start.getRow() && space.getRow() > end.getRow())) {
+            if (spaceOnBoard.getCol() == start.getCol()) {
+
+                if ((spaceOnBoard.getRow() > start.getRow() && spaceOnBoard.getRow() < end.getRow()) ||
+                        (spaceOnBoard.getRow() < start.getRow() && spaceOnBoard.getRow() > end.getRow())) {
                     return true;
                 }
             }
         } else {
-            if (space.getRow() == start.getRow()) {
-                if ((space.getCol() > start.getCol() && space.getCol() < end.getCol()) ||
-                        (space.getCol() < start.getCol() && space.getCol() > end.getCol())) {
+            if (spaceOnBoard.getRow() == start.getRow()) {
+
+                if ((spaceOnBoard.getCol() > start.getCol() && spaceOnBoard.getCol() < end.getCol()) ||
+                        (spaceOnBoard.getCol() < start.getCol() && spaceOnBoard.getCol() > end.getCol())) {
                     return true;
                 }
             }
@@ -133,5 +125,23 @@ public class StuRoute implements model.Route {
             return true;
         }
         return false;
+    }
+
+
+    public ArrayList<Track> makeTracks() {
+        ArrayList<Track> newT = new ArrayList<>();
+
+        if (ori==Orientation.VERTICAL) {
+            for (int x = start.getRow()+1; x < end.getRow(); x++) {
+
+                newT.add(new StuTrack(x, start.getCol(),this));
+            }
+        } else {
+            for (int x = start.getCol()+1; x < end.getCol(); x++) {
+
+                newT.add(new StuTrack(start.getRow(),x,this));
+            }
+        }
+        return newT;
     }
 }

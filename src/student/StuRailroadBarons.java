@@ -379,4 +379,18 @@ public class StuRailroadBarons implements model.RailroadBarons {
         return mpBound;
     }
 
+    public boolean isACornerStation(Station station) {
+        boolean cornerStat = false;
+
+        if (station.getRow()== 0 && (station.getCol()== map.getCols()-1|| station.getCol()== 0)) {
+            cornerStat = true;
+        }
+
+        else if (station.getRow()==map.getRows()-1 && (station.getCol()==0||station.getCol()==map.getCols()-1)) {
+            cornerStat = true;
+        }
+
+        return cornerStat;
+    }
+
 }

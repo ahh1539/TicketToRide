@@ -251,6 +251,7 @@ public class RailroadBaronsController implements RailroadMapObserver,
     @Override
     public void routeClaimed(RailroadMap map, Route route) {
         playerControl.setNumberOfCardsRemaining(game.numberOfCardsRemaining());
+        System.out.println(route.getLength());
         railroadMapPane.routeClaimed(route);
         console.write(game.getCurrentPlayer().toString() +
                 " has claimed the route from " + route.getOrigin().getName()

@@ -97,6 +97,9 @@ public class StuAIPlayer implements model.Player {
      */
     public void playAI() throws RailroadBaronsException {
         for (Route route: lonely.getRailroadMap().getRoutes()) {
+//            if (route.getLength() < 2 ){
+//                continue;
+//            }
             if (this.canClaimRoute(route)) {
                 int row = route.getTracks().get(0).getRow();
                 int col = route.getTracks().get(0).getCol();
@@ -180,11 +183,14 @@ public class StuAIPlayer implements model.Player {
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
         }
-        try {
-            playAI();
-        } catch (RailroadBaronsException e) {
-            e.printStackTrace();
+        if (getBaron() != Baron.BLUE){
+            try {
+                playAI();
+            } catch (RailroadBaronsException e) {
+                e.printStackTrace();
+            }
         }
+
     }
 
     /**

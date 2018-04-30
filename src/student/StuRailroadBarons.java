@@ -393,6 +393,7 @@ public class StuRailroadBarons implements model.RailroadBarons {
 
     public boolean crossCountryRoute(StuStation startNode, ArrayList<Station> finishNode, StuPlayer play) {
         Boolean[] multi = play.getMultiplier();
+        boolean checkCornerStation = isACornerStation(startNode);
         ArrayList<Station> visitedStation = new ArrayList<>();
 
         visitedStation.add(startNode);
@@ -402,8 +403,39 @@ public class StuRailroadBarons implements model.RailroadBarons {
             return false;
         }
         for (Station Stat: finishNode){
+            if (visitedStation.contains(Stat)) {
 
+                if (verticalStations.contains(startNode)) {
+                    if (!checkCornerStation &&(startNode.getRow() == Stat.getRow())) {}
+                    else if (startNode == Stat){}
+
+                    else if ((checkCornerStation && ! isACornerStation(Stat))&& startNode.getRow()== Stat.getRow()){
+                    }
+                    else if ((checkCornerStation && ! isACornerStation(Stat))&& startNode.getCol()== Stat.getCol()){
+                    }
+
+                    else {
+                        return true;
+                    }
+                }
+                if (horizontalStations.contains(startNode)){
+                    if (!checkCornerStation&&(startNode.getCol() == Stat.getCol())) {}
+                    else if (startNode==Stat){}
+
+                    else if ((checkCornerStation &&! isACornerStation(Stat))&& startNode.getRow()==Stat.getRow()){
+
+                    }
+                    else if ((checkCornerStation&&! isACornerStation(Stat))&& startNode.getCol()==Stat.getCol()){
+
+                    }
+
+                    else {
+                        return true;
+                    }
+                }
+            }
         }
+        return false;
     }
 
 }

@@ -33,6 +33,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         players.add(new StuAIPlayer(Baron.RED, this));
         players.add(new StuAIPlayer(Baron.GREEN, this));
         players.add(new StuAIPlayer(Baron.YELLOW, this));
+
         deck = new StuDeck();
         playerRot = 0;
     }

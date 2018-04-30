@@ -155,7 +155,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     @Override
     public void endTurn() {
         for (RailroadBaronsObserver obs:observers) {
-            obs.turnEnded(this,currentPlayer);
+            obs.turnEnded(this, currentPlayer);
         }
         if (!gameIsOver()) {
             playerRot += 1;

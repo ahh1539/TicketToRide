@@ -19,9 +19,9 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     rotation to the beginning of the cycle
      */
     public LonelyRailroadBarons() {
-        players.add(new StuAIPlayer(Baron.RED));
-        players.add(new StuAIPlayer(Baron.GREEN));
-        players.add(new StuAIPlayer(Baron.YELLOW));
+        players.add(new StuAIPlayer(Baron.RED, this));
+        players.add(new StuAIPlayer(Baron.GREEN, this));
+        players.add(new StuAIPlayer(Baron.YELLOW, this));
         players.add(new StuPlayer(Baron.BLUE));
         deck = new StuDeck();
         playerRot = 0;
@@ -113,11 +113,17 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
-        if (canCurrentPlayerClaimRoute(row,col)) {
-            currentPlayer.claimRoute(map.getRoute(row,col));
-            map.routeClaimed(map.getRoute(row,col));
+        if (currentPlayer.getBaron() == Baron.BLUE) {
+            if (canCurrentPlayerClaimRoute(row, col)) {
+                currentPlayer.claimRoute(map.getRoute(row, col));
+                map.routeClaimed(map.getRoute(row, col));
+            }
         }
+
     }
+
+
+
 
     /*
     ends a players turn chainging players rotation value to next player

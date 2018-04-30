@@ -15,6 +15,9 @@ public class StuAIPlayer implements model.Player {
     private TreeMap<Card, Integer> playerHand;
     private boolean claimedThisTurn;
 
+    private LonelyRailroadBarons lonely;
+
+
     private int trains;
     private int scoreTotal;
     private Pair lastPair;
@@ -22,15 +25,13 @@ public class StuAIPlayer implements model.Player {
     private boolean northSouthMultiplier;
     private boolean eastWestMultiplier;
 
-
-
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
     /**
      * Constructor for BoardPlayer.
      * @param baron
      */
-    public StuAIPlayer(Baron baron) {
+    public StuAIPlayer(Baron baron, LonelyRailroadBarons lonely) {
         claimedThisTurn = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
@@ -42,7 +43,7 @@ public class StuAIPlayer implements model.Player {
 
         northSouthMultiplier = false;
         eastWestMultiplier = false;
-
+        this.lonely = lonely;
 
     }
 
@@ -65,6 +66,37 @@ public class StuAIPlayer implements model.Player {
             temp.put(card,0);
         }
         return temp;
+    }
+
+    public StuAIPlayer(Baron baron) {
+        claimedThisTurn = false;
+        this.baron = baron;
+        claimedRoutes = new ArrayList<>();
+        playerHand = createHand();
+        trains = 45;
+        scoreTotal = 0;
+        lastCard = Card.NONE;
+        secondLastCard = Card.NONE;
+
+        northSouthMultiplier = false;
+        eastWestMultiplier = false;
+
+
+    }
+
+    public void playAI() throws RailroadBaronsException {
+        for (Route route: lonely.getRailroadMap().getRoutes()) {
+            if (this.canClaimRoute(route)) {
+                int row = route.getTracks().get(0).getRow();
+                int col = route.getTracks().get(0).getCol();
+                lonely.claimRoute(row,col);
+                claimRoute(route);
+            }
+            else {
+                continue;
+            }
+        }
+        lonely.endTurn();
     }
 
     /**
@@ -98,6 +130,7 @@ public class StuAIPlayer implements model.Player {
         observers.add(observer);
     }
 
+
     /**
      * Removes a player observer.
      * @param observer
@@ -107,6 +140,7 @@ public class StuAIPlayer implements model.Player {
         observers.add(observer);
     }
 
+
     /**
      * @return - a player.
      */
@@ -114,6 +148,7 @@ public class StuAIPlayer implements model.Player {
     public Baron getBaron() {
         return baron;
     }
+
 
     /**
      * Begins the player's turn.
@@ -134,6 +169,11 @@ public class StuAIPlayer implements model.Player {
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
         }
+        try {
+            playAI();
+        } catch (RailroadBaronsException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -144,6 +184,7 @@ public class StuAIPlayer implements model.Player {
         return lastPair;
     }
 
+
     /**
      * @param card The {@link Card} of interest.
      * @return - Cards in the player's playerHand.
@@ -152,6 +193,7 @@ public class StuAIPlayer implements model.Player {
     public int countCardsInHand(Card card) {
         return playerHand.get(card);
     }
+
 
     /**
      * @return - the number of train pieces on
@@ -193,7 +235,6 @@ public class StuAIPlayer implements model.Player {
             scoreTotal += route.getPointValue();
             trains -= route.getLength();
             claimedThisTurn = true;
-
         }
         for (PlayerObserver p:observers) {
             p.playerChanged(this);

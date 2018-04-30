@@ -19,6 +19,8 @@ import static java.lang.Integer.parseInt;
  */
 public class StuMapMaker implements model.MapMaker {
 
+    public ArrayList<Route> routtee = new ArrayList<>();
+
 
     /**
      *
@@ -85,6 +87,7 @@ public class StuMapMaker implements model.MapMaker {
                 cols = s.getCol();
             }
         }
+        routtee = routes;
         return new StuRailRoadBaronsMap(rows+1,cols+1,routes);
     }
 
@@ -98,5 +101,9 @@ public class StuMapMaker implements model.MapMaker {
     @Override
     public void writeMap(RailroadMap map, OutputStream out) throws RailroadBaronsException {
 
+    }
+
+    public ArrayList getRoutes(){
+        return routtee;
     }
 }

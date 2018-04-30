@@ -193,18 +193,45 @@ public class StuRailroadBarons implements model.RailroadBarons {
                 x += 1;
             }
         }
-        if (x == 4 && deck.numberOfCardsRemaining() == 0) {
+        if (x == 4) {
             gameOver1 = true;
             gameOver2 = true;
         }
-        if (gameOver1 && gameOver2) {
+        if (gameOver1&&gameOver2) {
             Player winner = null;
             int highScore = 0;
             for (Player p : players) {
-                if (p.getScore() >= highScore) {
-                    highScore = p.getScore();
+                boolean vertBonus = false;
+                boolean horiBonus = false;
+                for (Route r: p.getClaimedRoutes()) {
+                    if (r.getOrigin().getRow()==mapBound[2]) {
+                        if (vertBonus==false) {
+                            if (crossCountryRoute(r.getOrigin(), verticalStations, p)) {
+                                vertBonus = true;
+                            }
+                        }
+                    }
+                    if (r.getOrigin().getCol()==mapBound[0]) {
+                        if (horiBonus==false) {
+                            if (crossCountryRoute(r.getOrigin(), horizontalStations, p)) {
+                                horiBonus = true;
+                            }
+                        }
+                    }
+                }
+                int playerScore = p.getScore();
+                if (vertBonus) {
+                    playerScore += ((mapBound[3]-mapBound[2])+1) * 5;
+                }
+                if (horiBonus) {
+                    playerScore += ((mapBound[1]-mapBound[0])+1) * 5;
+                }
+                if (playerScore >= highScore) {
+                    highScore = playerScore;
                     winner = p;
                 }
+                p.startTurn(new StuPair(deck));
+                ((StuPlayer) p).updateScoreGUI(playerScore);
             }
             for (RailroadBaronsObserver r : observers) {
                 r.gameOver(this, winner);
@@ -282,7 +309,7 @@ public class StuRailroadBarons implements model.RailroadBarons {
         return mapBorderStations;
     }
 
-    public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, StuPlayer owner) {
+    public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, Player owner) {
         for (Station neigh : getNeighbors(curr)) {
 
             if (!wasVisited.contains(neigh)) {
@@ -391,8 +418,8 @@ public class StuRailroadBarons implements model.RailroadBarons {
         return cornerStat;
     }
 
-    public boolean crossCountryRoute(StuStation startNode, ArrayList<Station> finishNode, StuPlayer play) {
-        Boolean[] multi = play.getMultiplier();
+    public boolean crossCountryRoute(Station startNode, ArrayList<Station> finishNode, Player play) {
+        //Boolean[] multi = play.getMultiplier();
         boolean checkCornerStation = isACornerStation(startNode);
         ArrayList<Station> visitedStation = new ArrayList<>();
 
@@ -437,7 +464,5 @@ public class StuRailroadBarons implements model.RailroadBarons {
         }
         return false;
     }
-
-    //hellovjbfew
 
 }

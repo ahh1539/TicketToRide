@@ -218,6 +218,13 @@ public class StuPlayer implements Player {
         return scoreTotal;
     }
 
+    public void updateScoreGUI(int newScore) {
+        scoreTotal = newScore;
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
+        }
+    }
+
 
 
     /**

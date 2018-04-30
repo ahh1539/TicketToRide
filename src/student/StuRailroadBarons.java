@@ -213,4 +213,38 @@ public class StuRailroadBarons implements model.RailroadBarons  {
         }
         return false;
     }
+
+    public ArrayList<Station> getVerticalStations() {
+        ArrayList<Station> mapBorderStations = new ArrayList<>();
+
+        for (Route route :  map.getRoutes()) {
+            if (route.getOrigin().getRow()== mapBound[2]) {
+
+                if (!mapBorderStations.contains(route.getOrigin())) {
+                    mapBorderStations.add(route.getOrigin());
+                }
+            }
+
+            if (route.getDestination().getRow()== mapBound[2]) {
+
+                if (!mapBorderStations.contains(route.getDestination())) {
+                    mapBorderStations.add(route.getDestination());
+                }
+            }
+            if (route.getDestination().getRow()== map.getRows()-1) {
+
+                if (!mapBorderStations.contains(route.getDestination())) {
+                    mapBorderStations.add(route.getDestination());
+                }
+            }
+
+            if (route.getOrigin().getRow()== map.getRows()-1) {
+
+                if (!mapBorderStations.contains(route.getOrigin())) {
+                    mapBorderStations.add(route.getOrigin());
+                }
+            }
+        }
+        return mapBorderStations;
+    }
 }

@@ -20,7 +20,7 @@ public class StuPlayer implements Player {
     private Baron baron;
     private ArrayList<Route> claimedRoutes;
     private TreeMap<Card, Integer> cardHandPlayer;
-    private boolean claimedThisTurn;
+    private boolean currentlyClaimed;
 
     private int trains;
     private int scoreTotal;
@@ -37,7 +37,7 @@ public class StuPlayer implements Player {
      * @param baron
      */
     public StuPlayer(Baron baron) {
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
         cardHandPlayer = createHand();
@@ -132,7 +132,7 @@ public class StuPlayer implements Player {
                 cardHandPlayer.put(card, cardHandPlayer.get(card)+1);
             }
         }
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         for (PlayerObserver player: observers) {
             player.playerChanged(this);
         }
@@ -174,7 +174,7 @@ public class StuPlayer implements Player {
     @Override
     public boolean canClaimRoute(Route route) {
         if (route.getBaron() == Baron.UNCLAIMED && getNumberOfPieces()>=route.getLength()&&
-                claimedThisTurn==false&&numberOfCards(route.getLength())) {
+                currentlyClaimed==false&&numberOfCards(route.getLength())) {
 
             return true;
         }
@@ -197,7 +197,7 @@ public class StuPlayer implements Player {
             claimedRoutes.add(route);
             scoreTotal += route.getPointValue();
             trains = trains - route.getLength();
-            claimedThisTurn = true;
+            currentlyClaimed = true;
 
         }
         for (PlayerObserver player: observers) {

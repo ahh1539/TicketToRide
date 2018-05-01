@@ -18,7 +18,7 @@ public class StuAIPlayer implements model.Player {
     private Baron baron;
     private ArrayList<Route> claimedRoutes;
     private TreeMap<Card, Integer> cardHandPlayer;
-    private boolean claimedThisTurn;
+    private boolean currentlyClaimed;
 
     //private LonelyRailroadBarons lonely;
 
@@ -35,7 +35,7 @@ public class StuAIPlayer implements model.Player {
 
     /*
     public StuAIPlayer(Baron baron, LonelyRailroadBarons lonely) {
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
         cardHandPlayer = createHand();
@@ -77,7 +77,7 @@ public class StuAIPlayer implements model.Player {
      * @param baron
      */
     public StuAIPlayer(Baron baron) {
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
         cardHandPlayer = createHand();
@@ -175,7 +175,7 @@ public class StuAIPlayer implements model.Player {
                 cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
         }
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
         }
@@ -221,7 +221,7 @@ public class StuAIPlayer implements model.Player {
     public boolean canClaimRoute(Route route) {
         if (route.getBaron()==Baron.UNCLAIMED&&
                 getNumberOfPieces()>=route.getLength()&&
-                claimedThisTurn==false&&numberOfCards(route.getLength())) {
+                currentlyClaimed==false&&numberOfCards(route.getLength())) {
 
             return true;
         }
@@ -243,7 +243,7 @@ public class StuAIPlayer implements model.Player {
             claimedRoutes.add(route);
             scoreTotal += route.getPointValue();
             trains -= route.getLength();
-            claimedThisTurn = true;
+            currentlyClaimed = true;
         }
 
         for (PlayerObserver po:observers) {
@@ -398,7 +398,7 @@ public class StuAIPlayer implements model.Player {
                 cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
         }
-        claimedThisTurn = false;
+        currentlyClaimed = false;
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
         }

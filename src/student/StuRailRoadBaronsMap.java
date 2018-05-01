@@ -22,8 +22,8 @@ public class StuRailRoadBaronsMap implements RailroadMap {
     private ArrayList<RailroadMapObserver> observers;
 
 
-    /*
-    constructor which initializes values for rows cols and routes, also makes the game board
+    /**
+     *constructor which initializes values for rows cols and routes, also makes the game board
      */
     public StuRailRoadBaronsMap(int rows, int cols, ArrayList<Route> routes) {
 
@@ -35,20 +35,7 @@ public class StuRailRoadBaronsMap implements RailroadMap {
         createSpaces();
     }
 
-/*
-creates gameboard spaces
- */
-    public void createSpaces() {
-        for (Route route : routes) {
-            spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
 
-            spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
-
-            for (Track track : route.getTracks()) {
-                spaces[track.getRow()][track.getCol()] = track;
-            }
-        }
-    }
 
     /**
      * Adds the specified {@linkplain RailroadMapObserver observer} to the
@@ -139,15 +126,16 @@ creates gameboard spaces
      */
     @Override
     public int getLengthOfShortestUnclaimedRoute() {
-        int length = 99999;
+        int lengthOfRoute = 99999;
         for (Route route : routes) {
+
             if (route.getBaron() == Baron.UNCLAIMED) {
-                if (route.getLength() < length) {
-                    length = route.getLength();
+                if (route.getLength() < lengthOfRoute) {
+                    lengthOfRoute = route.getLength();
                 }
             }
         }
-        return length;
+        return lengthOfRoute;
     }
 
     /*
@@ -163,6 +151,23 @@ creates gameboard spaces
      */
     public ArrayList<RailroadMapObserver> getObservers() {
         return observers;
+    }
+
+
+    /**
+     * Creates the game board spaces
+     */
+    public void createSpaces() {
+        for (Route route : routes) {
+            spaces[route.getOrigin().getRow()][route.getOrigin().getCol()] = route.getOrigin();
+
+            spaces[route.getDestination().getRow()][route.getDestination().getCol()] = route.getDestination();
+
+            for (Track trackSpace : route.getTracks()) {
+
+                spaces[trackSpace.getRow()][trackSpace.getCol()] = trackSpace;
+            }
+        }
     }
 }
 

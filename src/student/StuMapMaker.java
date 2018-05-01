@@ -1,10 +1,8 @@
 package student;
 
-import model.Baron;
-import model.RailroadBaronsException;
-import model.RailroadMap;
-import model.Route;
+import model.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ import static java.lang.Integer.parseInt;
  */
 public class StuMapMaker implements model.MapMaker {
 
-    public ArrayList<Route> routtee = new ArrayList<>();
+    public ArrayList<Route> RoutesOnBoard = new ArrayList<>();
 
 
     /**
@@ -87,7 +85,7 @@ public class StuMapMaker implements model.MapMaker {
                 cols = s.getCol();
             }
         }
-        routtee = routes;
+        RoutesOnBoard = routes;
         return new StuRailRoadBaronsMap(rows+1,cols+1,routes);
     }
 
@@ -101,9 +99,31 @@ public class StuMapMaker implements model.MapMaker {
     @Override
     public void writeMap(RailroadMap map, OutputStream out) throws RailroadBaronsException {
 
+        try {
+            ArrayList<String> outputs = new ArrayList<>();
+
+            for (Route route : map.getRoutes()) {
+                Station originStation = route.getOrigin();
+                Station destStation = route.getDestination();
+
+                if (!outputs.contains(originStation.getName()) && !outputs.contains(destStation.getName())) {
+
+                    outputs.add(originStation.getName());
+                    outputs.add(destStation.getName());
+                    
+                    String output = (outputs.indexOf(originStation.getName()) + " " + originStation.getRow()
+                            + " " + originStation.getCol() + " " + originStation.getName() + "\n");
+                    out.write(output.getBytes());
+                }
+            }
+            
+        }
+        catch (IOException excep) {
+            System.out.println(excep.getMessage());
+        }
     }
 
     public ArrayList getRoutes(){
-        return routtee;
+        return RoutesOnBoard;
     }
 }

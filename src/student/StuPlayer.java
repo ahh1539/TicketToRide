@@ -33,7 +33,7 @@ public class StuPlayer implements Player {
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
     /**
-     * Constructor for BoardPlayer.
+     * Constructor for StuPlayer.
      * @param baron
      */
     public StuPlayer(Baron baron) {

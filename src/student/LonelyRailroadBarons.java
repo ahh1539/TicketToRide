@@ -73,7 +73,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
 
         if (currentPlayer instanceof StuAIPlayer) {
             try {
-                ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
+                ((StuAIPlayer) currentPlayer).getAIRoute(map.getRoutes());
             }
             catch (RailroadBaronsException x) {System.out.println(x.getMessage()); }
 
@@ -96,19 +96,19 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
      * starts a new Railroad barons game and initializes all values to their start position using a given
      * a map and a deck
      * @param map The {@link RailroadMap} on which the game will be played.
-     * @param deck The {@link Deck} of cards used to play the game. This may
+     * @param NewDeck The {@link Deck} of cards used to play the game. This may
      *             be ANY implementation of the {@link Deck} interface,
      *             meaning that a valid implementation of the
      *             {@link RailroadBarons} interface should use only the
      */
     @Override
-    public void startAGameWith(RailroadMap map, Deck deck) {
-        deck = new StuDeck();
+    public void startAGameWith(RailroadMap map, Deck NewDeck) {
+        NewDeck = new StuDeck();
         playerRot = 0;
         this.map = map;
         for (Player p:players) {
-            p.reset(deck.drawACard(),deck.drawACard(),
-                    deck.drawACard(),deck.drawACard());
+            p.reset(NewDeck.drawACard(),NewDeck.drawACard(),
+                    NewDeck.drawACard(),NewDeck.drawACard());
         }
         currentPlayer = players.get(playerRot);
         currentPlayer.startTurn(new StuPair(deck));
@@ -175,7 +175,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
 
 
     /**
-     * Ends a turn, changing the vlaue, thus updating which player takes their turn next
+     * Game logic for ending a turn, updates obs.
      */
     @Override
     public void endTurn() {
@@ -195,9 +195,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
 
             if (currentPlayer instanceof StuAIPlayer) {
                 try {
-                    Route r = ((StuAIPlayer) currentPlayer).findRoute(map.getRoutes());
-                    if (r!=null) {
-                        map.routeClaimed(r);
+                    Route rou = ((StuAIPlayer) currentPlayer).getAIRoute(map.getRoutes());
+
+                    if (rou!=null) {
+                        map.routeClaimed(rou);
                     }
                 } catch (RailroadBaronsException e) {}
                 endTurn();

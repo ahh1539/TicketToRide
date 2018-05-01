@@ -17,7 +17,7 @@ public class StuAIPlayer implements model.Player {
 
     private Baron baron;
     private ArrayList<Route> claimedRoutes;
-    private TreeMap<Card, Integer> playerHand;
+    private TreeMap<Card, Integer> cardHandPlayer;
     private boolean claimedThisTurn;
 
     //private LonelyRailroadBarons lonely;
@@ -38,7 +38,7 @@ public class StuAIPlayer implements model.Player {
         claimedThisTurn = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
-        playerHand = createHand();
+        cardHandPlayer = createHand();
         trains = 45;
         scoreTotal = 0;
         lastCard = Card.NONE;
@@ -52,7 +52,7 @@ public class StuAIPlayer implements model.Player {
      */
 
     /**
-     * @return - Cards in the player's playerHand.
+     * @return - Cards in the player's cardHandPlayer.
      */
     public TreeMap<Card, Integer> createHand() {
         TreeMap<Card,Integer> temp = new TreeMap<>();
@@ -73,14 +73,14 @@ public class StuAIPlayer implements model.Player {
     }
 
     /**
-     *
+     *AI Constructor
      * @param baron
      */
     public StuAIPlayer(Baron baron) {
         claimedThisTurn = false;
         this.baron = baron;
         claimedRoutes = new ArrayList<>();
-        playerHand = createHand();
+        cardHandPlayer = createHand();
         trains = 45;
         scoreTotal = 0;
         lastCard = Card.NONE;
@@ -91,10 +91,6 @@ public class StuAIPlayer implements model.Player {
 
 
     }
-
-    /*
-    this is basically the AI for lonely that choses the first available route
-     */
 
     /**
     public void playAI() throws RailroadBaronsException {
@@ -118,7 +114,7 @@ public class StuAIPlayer implements model.Player {
      */
 
     /**
-     * Resets the player's playerHand.
+     * Resets the player's cardHandPlayer.
      * @param dealt
      */
     @Override
@@ -128,11 +124,11 @@ public class StuAIPlayer implements model.Player {
         claimedRoutes.clear();
         lastCard = Card.NONE;
         secondLastCard = Card.NONE;
-        for (int cards:playerHand.values()) {
+        for (int cards:cardHandPlayer.values()) {
             cards = 0;
         }
         for (int x=0;x<4;x++) {
-            playerHand.put(dealt[x], playerHand.get(dealt[x]) + 1);
+            cardHandPlayer.put(dealt[x], cardHandPlayer.get(dealt[x]) + 1);
         }
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
@@ -171,12 +167,12 @@ public class StuAIPlayer implements model.Player {
     /**
     public void startTurn(Pair dealt) {
         lastPair = dealt;
-        for (Card c:playerHand.keySet()) {
+        for (Card c:cardHandPlayer.keySet()) {
             if (c==lastPair.getFirstCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+                cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
             if (c==lastPair.getSecondCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+                cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
         }
         claimedThisTurn = false;
@@ -197,7 +193,7 @@ public class StuAIPlayer implements model.Player {
 
 
     /**
-     * @return - Last pair of cards.
+     * @return - Last pair of dealt cards.
      */
     public Pair getLastTwoCards() {
         return lastPair;
@@ -205,23 +201,16 @@ public class StuAIPlayer implements model.Player {
 
 
     /**
-     * @param card The {@link Card} of interest.
-     * @return - Cards in the player's playerHand.
+     * @param card The card.
+     * @return - Cards in the players Hand.
      */
     @Override
     public int countCardsInHand(Card card) {
-        return playerHand.get(card);
+        return cardHandPlayer.get(card);
     }
 
 
-    /**
-     * @return - the number of train pieces on
-     * the board.
-     */
-    @Override
-    public int getNumberOfPieces() {
-        return trains;
-    }
+
 
     /**
      * Check
@@ -232,14 +221,15 @@ public class StuAIPlayer implements model.Player {
     public boolean canClaimRoute(Route route) {
         if (route.getBaron()==Baron.UNCLAIMED&&
                 getNumberOfPieces()>=route.getLength()&&
-                claimedThisTurn==false&&checkCardAmounts(route.getLength())) {
+                claimedThisTurn==false&&numberOfCards(route.getLength())) {
+
             return true;
         }
         return false;
     }
 
     /**
-     * A player claims a route.
+     * Claims A Route
      * @param route The {@link Route} to claim.
      *
      * @throws RailroadBaronsException
@@ -249,19 +239,20 @@ public class StuAIPlayer implements model.Player {
         if (canClaimRoute(route)) {
 
             route.claim(baron);
-            playCards(route);
+            cardDealing(route);
             claimedRoutes.add(route);
             scoreTotal += route.getPointValue();
             trains -= route.getLength();
             claimedThisTurn = true;
         }
-        for (PlayerObserver p:observers) {
-            p.playerChanged(this);
+
+        for (PlayerObserver po:observers) {
+            po.playerChanged(this);
         }
     }
 
     /**
-     * @return - routes claimed by a player.
+     * @return routes claimed by a baron
      */
     @Override
     public Collection<Route> getClaimedRoutes() {
@@ -269,7 +260,7 @@ public class StuAIPlayer implements model.Player {
     }
 
     /**
-     * @return - the player's scoreTotal.
+     * @return  the player scoreTotal.
      */
     @Override
     public int getScore() {
@@ -287,69 +278,68 @@ public class StuAIPlayer implements model.Player {
 
 
     /**
-     * Checks to see if the game is over using routes.
+     * Checks to see if the game is over using the routst
      * @param shortestUnclaimedRoute
      *
      * @return - boolean
      */
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
-        if (getNumberOfPieces()>=shortestUnclaimedRoute&&checkCardAmounts(shortestUnclaimedRoute)) {
+        if (getNumberOfPieces()>=shortestUnclaimedRoute&&numberOfCards(shortestUnclaimedRoute)) {
             return true;
         }
         return false;
     }
 
     /**
-     * Checks to see if game is over using card
-     * amounts.
-     * @param routeLength
+     * Checks to see if game is over from card amounts
+     * @param routeLength length of the route
      * @return - boolean.
      */
-    public boolean checkCardAmounts(int routeLength) {
-        int mostCards = 0;
+    public boolean numberOfCards(int routeLength) {
+        int MCards = 0;
         int wildCards = 0;
 
-        for (Card card: playerHand.keySet()) {
+        for (Card card: cardHandPlayer.keySet()) {
             if (card==Card.WILD) {
-                wildCards = playerHand.get(card);
+                wildCards = cardHandPlayer.get(card);
             }
             else {
-                if (playerHand.get(card)>mostCards) {
-                    mostCards = playerHand.get(card);
+                if (cardHandPlayer.get(card)>MCards) {
+                    MCards = cardHandPlayer.get(card);
                 }
             }
         }
-        if (mostCards >= routeLength) {
+        if (MCards >= routeLength) {
             return true;
         }
-        if (mostCards == routeLength-1 && wildCards > 0) {
+        if (MCards == routeLength-1 && wildCards > 0) {
             return true;
         }
         return false;
     }
 
     /**
-     * Uses the player's cards to claim routes.
-     * @param route
+     * Uses the player cards to claim route.
+     * @param route a route
      */
-    public void playCards(Route route) {
+    public void cardDealing(Route route) {
         boolean played = false;
-        for (Card card : playerHand.keySet()) {
+        for (Card card : cardHandPlayer.keySet()) {
             if (card != Card.WILD) {
-                if (playerHand.get(card) >= route.getLength()) {
-                    playerHand.put(card, playerHand.get(card)-route.getLength());
+                if (cardHandPlayer.get(card) >= route.getLength()) {
+                    cardHandPlayer.put(card, cardHandPlayer.get(card)-route.getLength());
                     played = true;
                     break;
                 }
             }
         }
         if (!played) {
-            for (Card card : playerHand.keySet()) {
+            for (Card card : cardHandPlayer.keySet()) {
                 if (card != Card.WILD) {
-                    if (playerHand.get(card) == route.getLength() - 1 && playerHand.get(Card.WILD) >= 1) {
-                        playerHand.put(card, playerHand.get(card) - (route.getLength() - 1));
-                        playerHand.put(Card.WILD, playerHand.get(Card.WILD) - 1);
+                    if (cardHandPlayer.get(card) == route.getLength() - 1 && cardHandPlayer.get(Card.WILD) >= 1) {
+                        cardHandPlayer.put(card, cardHandPlayer.get(card) - (route.getLength() - 1));
+                        cardHandPlayer.put(Card.WILD, cardHandPlayer.get(Card.WILD) - 1);
                         break;
                     }
                 }
@@ -358,7 +348,7 @@ public class StuAIPlayer implements model.Player {
     }
 
     /**
-     * @return - Name of Baron.
+     * @return baron.
      */
     public String toString() {
         if (baron==Baron.RED) {return "RED Baron";}
@@ -377,8 +367,13 @@ public class StuAIPlayer implements model.Player {
     }
 
 
-
-    public Route findRoute(Collection<Route> routes) throws RailroadBaronsException{
+    /**
+     * Claims the route of the AI
+     * @param routes routes available
+     * @return route
+     * @throws RailroadBaronsException
+     */
+    public Route getAIRoute(Collection<Route> routes) throws RailroadBaronsException{
         for (Route route: routes) {
             if (canClaimRoute(route)) {
                 claimRoute(route);
@@ -389,20 +384,32 @@ public class StuAIPlayer implements model.Player {
     }
 
 
+    /**
+     * starts the turn by dealing cards, checks if player has claimed.
+     * @param dealt a {@linkplain Pair pair of cards} to the player. Note that
+     */
     public void startTurn(Pair dealt) {
         lastPair = dealt;
-        for (Card c:playerHand.keySet()) {
+        for (Card c:cardHandPlayer.keySet()) {
             if (c==lastPair.getFirstCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+                cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
             if (c==lastPair.getSecondCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+                cardHandPlayer.put(c,cardHandPlayer.get(c)+1);
             }
         }
         claimedThisTurn = false;
         for (PlayerObserver p:observers) {
             p.playerChanged(this);
         }
+    }
+
+    /**
+     * @return - the number of train pieces.
+     */
+    @Override
+    public int getNumberOfPieces() {
+        return trains;
     }
 
 

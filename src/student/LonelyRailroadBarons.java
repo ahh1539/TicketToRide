@@ -37,26 +37,28 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         playerRot = 0;
     }
 
-    /*
-    adds new observer observers list to be notified when the state of the game changes
+    /**
+     * adds new observer observers list to be notified when the state of the game changes
+     * @param observer The {@link RailroadBaronsObserver} to add to the
      */
     @Override
     public void addRailroadBaronsObserver(RailroadBaronsObserver observer) {
         observers.add(observer);
     }
 
-    /*
-    removes an observer from the list of observers so that they are not notified
-    when the game state changes
+    /**
+     * Removes an observer from the list of observers
+     * @param observer The {@link RailroadBaronsObserver} to remove.
      */
     @Override
     public void removeRailroadBaronsObserver(RailroadBaronsObserver observer) {
         observers.remove(observer);
     }
 
-    /*
-    starts a new Railroad barons game and initializes all values to their start position and creates game deck
-    using a given map
+    /**
+     * starts a new Railroad barons game and initializes all values to their start position and creates game
+     * map using map file
+     * @param map The {@link RailroadMap} on which the game will be played.
      */
     @Override
     public void startAGameWith(RailroadMap map) {
@@ -90,9 +92,14 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         horizontalStations = getHorizontalStations();
     }
 
-    /*
-    starts a new Railroad barons game and initializes all values to their start position using a given
-    map and deck
+    /**
+     * starts a new Railroad barons game and initializes all values to their start position using a given
+     * a map and a deck
+     * @param map The {@link RailroadMap} on which the game will be played.
+     * @param deck The {@link Deck} of cards used to play the game. This may
+     *             be ANY implementation of the {@link Deck} interface,
+     *             meaning that a valid implementation of the
+     *             {@link RailroadBarons} interface should use only the
      */
     @Override
     public void startAGameWith(RailroadMap map, Deck deck) {
@@ -114,32 +121,40 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         horizontalStations = getHorizontalStations();
     }
 
-    /*
-    returns the gameboard map
+    /**
+     * The game board
+     * @return map
      */
     @Override
     public RailroadMap getRailroadMap() {
         return map;
     }
 
-    /*
-    returns the number of unassigned cards left in the deck
+    /**
+     * returns the number of unassigned cards left in the deck
+     * @return int
      */
     @Override
     public int numberOfCardsRemaining() {
         return deck.numberOfCardsRemaining();
     }
 
-    /*
-    returns a boolean stating whether or not a play is eligible to claim a route
+    /**
+     * Returns a boolean stating if the player cna claim a route
+     * @param row The row of a {@link Track} in the {@link Route} to check.
+     * @param col The column of a {@link Track} in the {@link Route} to check.
+     * @return
      */
     @Override
     public boolean canCurrentPlayerClaimRoute(int row, int col) {
         return (currentPlayer.canClaimRoute(map.getRoute(row,col)));
     }
 
-    /*
-    claims route fot player and updates the gameboard of that change
+    /**
+     * Claims a route for the given route and player
+     * @param row The row of a {@link Track} in the {@link Route} to claim.
+     * @param col The column of a {@link Track} in the {@link Route} to claim.
+     * @throws RailroadBaronsException
      */
     @Override
     public void claimRoute(int row, int col) throws RailroadBaronsException {
@@ -159,10 +174,8 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     }
 
 
-
-
-    /*
-    ends a players turn chainging players rotation value to next player
+    /**
+     * Ends a turn, changing the vlaue, thus updating which player takes their turn next
      */
     @Override
     public void endTurn() {
@@ -192,24 +205,27 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         }
     }
 
-    /*
-      returns the player whose turn it currently is
+    /**
+     *
+     * @return the current player
      */
     @Override
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
 
-    /*
-    returns all players currently in the game
+    /**
+     * Returns all players in the game
+     * @return the collection of players
      */
     @Override
     public Collection<Player> getPlayers() {
         return players;
     }
 
-    /*
-    checks game status to see if game has met end requirenments and declairs a winPlayer
+    /**
+     * A function to test all cases of a winning condition
+     * @return boolean- true if game is over
      */
     @Override
     public boolean gameIsOver() {
@@ -291,6 +307,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         return false;
     }
 
+    /**
+     * Gets all vertical stations on the map eligible to be a start or finish node
+     * @return a list of vertical stations that are eligible
+     */
     public ArrayList<Station> getVerticalStations() {
         ArrayList<Station> mapBorderStations = new ArrayList<>();
 
@@ -325,6 +345,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         return mapBorderStations;
     }
 
+    /**
+     * Returns all horizontal stations on the map eligible to be a start or finish node
+     * @return A list of eligible nodes
+     */
     public ArrayList<Station> getHorizontalStations() {
         ArrayList<Station> mapBorderStations = new ArrayList<>();
 
@@ -359,6 +383,12 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         return mapBorderStations;
     }
 
+    /**
+     * Depth First Search of the stations to find the paths
+     * @param curr The current stations
+     * @param wasVisited List of all visited stations
+     * @param owner The player that it is currently checking
+     */
     public void DFSCrossCountry(Station curr, ArrayList<Station> wasVisited, Player owner) {
         for (Station neigh : getNeighbors(curr)) {
 
@@ -384,6 +414,11 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         }
     }
 
+    /**
+     * Gets all the neighbors of the adjacent nodes (stations)
+     * @param station
+     * @return a list of neighbor stations
+     */
     public ArrayList<Station> getNeighbors(Station station) {
         ArrayList<Station> neighbor = new ArrayList<>();
 
@@ -405,6 +440,10 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     }
 
 
+    /**
+     * Checks the bounds of the map and determines the top left corner
+     * @return An array of integers
+     */
     public Integer[] getMapBound() {
         Integer[] mpBound = new Integer[4];
 
@@ -456,6 +495,11 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         return mpBound;
     }
 
+    /**
+     * Checks for corner stations, used in implementation of cross country route.
+     * @param station A station
+     * @return A boolean, true if the station is a corner
+     */
     public boolean isACornerStation(Station station) {
         boolean cornerStat = false;
 
@@ -468,6 +512,14 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         return cornerStat;
     }
 
+
+    /**
+     * Checks for a cross country route that can be assigned to a player, a valid route
+     * @param startNode The starting node of the route
+     * @param finishNode The goal node of the route
+     * @param play the player that the function is checking
+     * @return A boolean, true if they have a cross country route
+     */
     public boolean crossCountryRoute(Station startNode, ArrayList<Station> finishNode, Player play) {
         boolean checkCornerStation = isACornerStation(startNode);
         ArrayList<Station> visitedStation = new ArrayList<>();

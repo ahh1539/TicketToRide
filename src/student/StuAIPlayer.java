@@ -20,7 +20,7 @@ public class StuAIPlayer implements model.Player {
     private TreeMap<Card, Integer> playerHand;
     private boolean claimedThisTurn;
 
-    private LonelyRailroadBarons lonely;
+    //private LonelyRailroadBarons lonely;
 
 
     private int trains;
@@ -32,10 +32,8 @@ public class StuAIPlayer implements model.Player {
 
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
 
-    /**
-     * Constructor for AI Player.
-     * @param baron
-     */
+
+    /*
     public StuAIPlayer(Baron baron, LonelyRailroadBarons lonely) {
         claimedThisTurn = false;
         this.baron = baron;
@@ -51,6 +49,7 @@ public class StuAIPlayer implements model.Player {
         this.lonely = lonely;
 
     }
+     */
 
     /**
      * @return - Cards in the player's playerHand.
@@ -73,8 +72,9 @@ public class StuAIPlayer implements model.Player {
         return temp;
     }
 
-    /*
-    constructor for the AI player
+    /**
+     *
+     * @param baron
      */
     public StuAIPlayer(Baron baron) {
         claimedThisTurn = false;
@@ -95,6 +95,8 @@ public class StuAIPlayer implements model.Player {
     /*
     this is basically the AI for lonely that choses the first available route
      */
+
+    /**
     public void playAI() throws RailroadBaronsException {
         for (Route route: lonely.getRailroadMap().getRoutes()) {
 //            if (route.getLength() < 2 ){
@@ -112,6 +114,8 @@ public class StuAIPlayer implements model.Player {
         }
         lonely.endTurn();
     }
+
+     */
 
     /**
      * Resets the player's playerHand.
@@ -165,10 +169,6 @@ public class StuAIPlayer implements model.Player {
 
 
     /**
-     * Begins the player's turn.
-     * @param dealt
-     */
-    @Override
     public void startTurn(Pair dealt) {
         lastPair = dealt;
         for (Card c:playerHand.keySet()) {
@@ -193,10 +193,12 @@ public class StuAIPlayer implements model.Player {
 
     }
 
+     */
+
+
     /**
      * @return - Last pair of cards.
      */
-    @Override
     public Pair getLastTwoCards() {
         return lastPair;
     }
@@ -372,6 +374,35 @@ public class StuAIPlayer implements model.Player {
         multi[0] = northSouthMultiplier;
         multi[1] = eastWestMultiplier;
         return multi;
+    }
+
+
+
+    public Route findRoute(Collection<Route> routes) throws RailroadBaronsException{
+        for (Route route: routes) {
+            if (canClaimRoute(route)) {
+                claimRoute(route);
+                return route;
+            }
+        }
+        return null;
+    }
+
+
+    public void startTurn(Pair dealt) {
+        lastPair = dealt;
+        for (Card c:playerHand.keySet()) {
+            if (c==lastPair.getFirstCard()) {
+                playerHand.put(c,playerHand.get(c)+1);
+            }
+            if (c==lastPair.getSecondCard()) {
+                playerHand.put(c,playerHand.get(c)+1);
+            }
+        }
+        claimedThisTurn = false;
+        for (PlayerObserver p:observers) {
+            p.playerChanged(this);
+        }
     }
 
 

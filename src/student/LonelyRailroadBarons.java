@@ -24,15 +24,14 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     private Integer[] mapBound;
 
 
-    /*
-    constructor of game that adds players to board and sets the player
-    rotation to the beginning of the cycles
+    /**
+     * Lonely Constructor that initializes three AI players and one human player.
      */
     public LonelyRailroadBarons() {
         players.add(new StuPlayer(Baron.BLUE));
-        players.add(new StuAIPlayer(Baron.RED, this));
-        players.add(new StuAIPlayer(Baron.GREEN, this));
-        players.add(new StuAIPlayer(Baron.YELLOW, this));
+        players.add(new StuAIPlayer(Baron.RED));
+        players.add(new StuAIPlayer(Baron.GREEN));
+        players.add(new StuAIPlayer(Baron.YELLOW));
 
         deck = new StuDeck();
         playerRot = 0;
@@ -210,7 +209,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     }
 
     /*
-    checks game status to see if game has met end requirenments and declairs a winner
+    checks game status to see if game has met end requirenments and declairs a winPlayer
      */
     @Override
     public boolean gameIsOver() {
@@ -223,48 +222,56 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
         if (deck.numberOfCardsRemaining() == 0) {
             gameOver1 = true;
         }
-        int x = 0;
+        
+        int check = 0;
         for (Player p : players) {
             if (!p.canContinuePlaying(map.getLengthOfShortestUnclaimedRoute())) {
-                x += 1;
+                check += 1;
             }
         }
-        if (x == 4) {
+        if (check == 4) {
             gameOver1 = true;
             gameOver2 = true;
         }
         if (gameOver1&&gameOver2) {
-            Player winner = null;
-            int highScore = 0;
+            int highestScore = 0;
+            Player winPlayer = null;
+
+
             for (Player p : players) {
-                boolean vertBonus = false;
-                boolean horiBonus = false;
+
+                boolean HorizontalMultiplier = false;
+                boolean verticalMultiplier = false;
+                
                 for (Route r: p.getClaimedRoutes()) {
+                    
                     if (r.getOrigin().getRow()==mapBound[2]) {
-                        if (vertBonus==false) {
+                        if (!verticalMultiplier) {
+                            
                             if (crossCountryRoute(r.getOrigin(), verticalStations, p)) {
-                                vertBonus = true;
+                                verticalMultiplier = true;
                             }
                         }
                     }
                     if (r.getOrigin().getCol()==mapBound[0]) {
-                        if (horiBonus==false) {
+                        if (!HorizontalMultiplier) {
+                            
                             if (crossCountryRoute(r.getOrigin(), horizontalStations, p)) {
-                                horiBonus = true;
+                                HorizontalMultiplier = true;
                             }
                         }
                     }
                 }
                 int playerScore = p.getScore();
-                if (vertBonus) {
+                if (verticalMultiplier) {
                     playerScore += ((mapBound[3]-mapBound[2])+1) * 5;
                 }
-                if (horiBonus) {
+                if (HorizontalMultiplier) {
                     playerScore += ((mapBound[1]-mapBound[0])+1) * 5;
                 }
-                if (playerScore >= highScore) {
-                    highScore = playerScore;
-                    winner = p;
+                if (playerScore >= highestScore) {
+                    highestScore = playerScore;
+                    winPlayer = p;
                 }
                 p.startTurn(new StuPair(deck));
 
@@ -277,7 +284,7 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
 
             }
             for (RailroadBaronsObserver r : observers) {
-                r.gameOver(this, winner);
+                r.gameOver(this, winPlayer);
             }
             return true;
         }
@@ -462,7 +469,6 @@ public class LonelyRailroadBarons implements model.RailroadBarons{
     }
 
     public boolean crossCountryRoute(Station startNode, ArrayList<Station> finishNode, Player play) {
-        //Boolean[] multi = play.getMultiplier();
         boolean checkCornerStation = isACornerStation(startNode);
         ArrayList<Station> visitedStation = new ArrayList<>();
 

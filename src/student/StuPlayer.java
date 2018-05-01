@@ -218,13 +218,18 @@ public class StuPlayer implements Player {
         return scoreTotal;
     }
 
+
+    /**
+     * Updates the score used for the cross country route
+     * @param newScore int
+     */
     public void updateScoreGUI(int newScore) {
         scoreTotal = newScore;
-        for (PlayerObserver p:observers) {
-            p.playerChanged(this);
+
+        for (PlayerObserver po:observers) {
+            po.playerChanged(this);
         }
     }
-
 
 
     /**
@@ -310,10 +315,12 @@ public class StuPlayer implements Player {
     }
 
 
+    /**
     public Boolean[] getMultiplier(){
         Boolean multi[] = new Boolean[2];
         multi[0] = northSouthMultiplier;
         multi[1] = eastWestMultiplier;
         return multi;
     }
+     */
 }

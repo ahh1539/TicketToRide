@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.TreeMap;
 
+/**
+ * creates an instance of player in the game
+ *
+ * @author Brett Farruggia & Alex Hurley
+ */
 public class StuPlayer implements Player {
     private Card lastCard;
     private Card secondLastCard;
@@ -23,7 +28,6 @@ public class StuPlayer implements Player {
 
     private boolean northSouthMultiplier;
     private boolean eastWestMultiplier;
-
 
 
     private ArrayList<PlayerObserver> observers = new ArrayList<>();
@@ -44,7 +48,6 @@ public class StuPlayer implements Player {
 
         northSouthMultiplier = false;
         eastWestMultiplier = false;
-
 
     }
 
@@ -80,14 +83,15 @@ public class StuPlayer implements Player {
         claimedRoutes.clear();
         lastCard = Card.NONE;
         secondLastCard = Card.NONE;
-        for (int cards:playerHand.values()) {
+        for (int cards: playerHand.values()) {
             cards = 0;
         }
-        for (int x=0;x<4;x++) {
+        for (int x = 0; x < 4; x++) {
             playerHand.put(dealt[x], playerHand.get(dealt[x]) + 1);
         }
-        for (PlayerObserver p:observers) {
-            p.playerChanged(this);
+        for (PlayerObserver player: observers) {
+
+            player.playerChanged(this);
         }
     }
 
@@ -97,6 +101,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public void addPlayerObserver(PlayerObserver observer) {
+
         observers.add(observer);
     }
 
@@ -106,6 +111,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public void removePlayerObserver(PlayerObserver observer) {
+
         observers.add(observer);
     }
 
@@ -114,6 +120,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public Baron getBaron() {
+
         return baron;
     }
 
@@ -124,17 +131,18 @@ public class StuPlayer implements Player {
     @Override
     public void startTurn(Pair dealt) {
         lastPair = dealt;
-        for (Card c:playerHand.keySet()) {
-            if (c==lastPair.getFirstCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+
+        for (Card card:playerHand.keySet()) {
+            if (card == lastPair.getFirstCard()) {
+                playerHand.put(card, playerHand.get(card)+1);
             }
-            if (c==lastPair.getSecondCard()) {
-                playerHand.put(c,playerHand.get(c)+1);
+            if (card == lastPair.getSecondCard()) {
+                playerHand.put(card, playerHand.get(card)+1);
             }
         }
         claimedThisTurn = false;
-        for (PlayerObserver p:observers) {
-            p.playerChanged(this);
+        for (PlayerObserver player: observers) {
+            player.playerChanged(this);
         }
     }
 
@@ -143,6 +151,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public Pair getLastTwoCards() {
+
         return lastPair;
     }
 
@@ -152,6 +161,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public int countCardsInHand(Card card) {
+
         return playerHand.get(card);
     }
 
@@ -161,6 +171,7 @@ public class StuPlayer implements Player {
      */
     @Override
     public int getNumberOfPieces() {
+
         return trains;
     }
 
@@ -171,11 +182,12 @@ public class StuPlayer implements Player {
      */
     @Override
     public boolean canClaimRoute(Route route) {
-        if (route.getBaron()==Baron.UNCLAIMED&&
-                getNumberOfPieces()>=route.getLength()&&
+        if (route.getBaron() == Baron.UNCLAIMED && getNumberOfPieces()>=route.getLength()&&
                 claimedThisTurn==false&&checkCardAmounts(route.getLength())) {
+
             return true;
         }
+
         return false;
     }
 
@@ -193,12 +205,12 @@ public class StuPlayer implements Player {
             playCards(route);
             claimedRoutes.add(route);
             scoreTotal += route.getPointValue();
-            trains -= route.getLength();
+            trains = trains - route.getLength();
             claimedThisTurn = true;
 
         }
-        for (PlayerObserver p:observers) {
-            p.playerChanged(this);
+        for (PlayerObserver player: observers) {
+            player.playerChanged(this);
         }
     }
 
@@ -207,29 +219,27 @@ public class StuPlayer implements Player {
      */
     @Override
     public Collection<Route> getClaimedRoutes() {
+
         return claimedRoutes;
     }
+
 
     /**
      * @return - the player's scoreTotal.
      */
     @Override
     public int getScore() {
+
         return scoreTotal;
     }
 
-
-    /**
-     * Updates the score used for the cross country route
-     * @param newScore int
-     */
     public void updateScoreGUI(int newScore) {
         scoreTotal = newScore;
-
-        for (PlayerObserver po:observers) {
-            po.playerChanged(this);
+        for (PlayerObserver player: observers) {
+            player.playerChanged(this);
         }
     }
+
 
 
     /**
@@ -240,9 +250,11 @@ public class StuPlayer implements Player {
      */
     @Override
     public boolean canContinuePlaying(int shortestUnclaimedRoute) {
-        if (getNumberOfPieces()>=shortestUnclaimedRoute&&checkCardAmounts(shortestUnclaimedRoute)) {
+        if (getNumberOfPieces() >= shortestUnclaimedRoute&&checkCardAmounts(shortestUnclaimedRoute)) {
+
             return true;
         }
+
         return false;
     }
 
@@ -257,11 +269,11 @@ public class StuPlayer implements Player {
         int wildCards = 0;
 
         for (Card card: playerHand.keySet()) {
-            if (card==Card.WILD) {
+            if (card == Card.WILD) {
                 wildCards = playerHand.get(card);
             }
             else {
-                if (playerHand.get(card)>mostCards) {
+                if (playerHand.get(card) > mostCards) {
                     mostCards = playerHand.get(card);
                 }
             }
@@ -284,7 +296,7 @@ public class StuPlayer implements Player {
         for (Card card : playerHand.keySet()) {
             if (card != Card.WILD) {
                 if (playerHand.get(card) >= route.getLength()) {
-                    playerHand.put(card, playerHand.get(card)-route.getLength());
+                    playerHand.put(card, playerHand.get(card) - route.getLength());
                     played = true;
                     break;
                 }
@@ -295,6 +307,7 @@ public class StuPlayer implements Player {
                 if (card != Card.WILD) {
                     if (playerHand.get(card) == route.getLength() - 1 && playerHand.get(Card.WILD) >= 1) {
                         playerHand.put(card, playerHand.get(card) - (route.getLength() - 1));
+
                         playerHand.put(Card.WILD, playerHand.get(Card.WILD) - 1);
                         break;
                     }
@@ -307,20 +320,20 @@ public class StuPlayer implements Player {
      * @return - Name of Baron.
      */
     public String toString() {
-        if (baron==Baron.RED) {return "RED Baron";}
-        if (baron==Baron.YELLOW) {return "YELLOW Baron";}
-        if (baron==Baron.GREEN) {return "GREEN Baron";}
-        if (baron==Baron.BLUE) {return "BLUE Baron";}
+        if (baron == Baron.RED) {return "RED Baron";}
+        if (baron == Baron.YELLOW) {return "YELLOW Baron";}
+        if (baron == Baron.GREEN) {return "GREEN Baron";}
+        if (baron == Baron.BLUE) {return "BLUE Baron";}
         return ("Failed");
     }
 
-
-    /**
+/*
+multiplies the score of a player if they connect a route from the north to south or east to west
+ */
     public Boolean[] getMultiplier(){
         Boolean multi[] = new Boolean[2];
         multi[0] = northSouthMultiplier;
         multi[1] = eastWestMultiplier;
         return multi;
     }
-     */
 }

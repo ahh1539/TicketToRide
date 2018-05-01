@@ -1,6 +1,9 @@
 package student;
 
 import model.*;
+/**
+ * @author Brett Farruggia &  Alex Hurley
+ */
 
 public class StuRailRoadMapObserver implements RailroadMapObserver {
 
